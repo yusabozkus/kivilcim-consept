@@ -22,7 +22,7 @@ export async function generateMetadata({
       openGraph: {
         title: "Duyuru Bulunamadı",
         description: "Aradığınız duyuru bulunamadı.",
-        url: `${baseUrl}/announcements/${id}`,
+        url: `${baseUrl}/duyurular/${id}`,
         siteName: "Türk'ün Kanadı",
         images: [
           {
@@ -64,12 +64,16 @@ export async function generateMetadata({
 
   const textPreview = getTextPreview(announcement.content);
 
+  // Güvenli tarih parse
+  const createdAt = new Date(announcement.createdAt).toISOString();
+  const updatedAt = new Date(announcement.updatedAt).toISOString();
+
   return {
     title: announcement.title,
     description: textPreview,
     openGraph: {
       siteName: "Türk'ün Kanadı",
-      url: `${baseUrl}/announcements/${id}`,
+      url: `${baseUrl}/duyurular/${id}`,
       title: announcement.title,
       description: textPreview,
       images: [
@@ -81,8 +85,8 @@ export async function generateMetadata({
         },
       ],
       type: "article",
-      publishedTime: announcement.createdAt.toISOString(),
-      modifiedTime: announcement.updatedAt.toISOString(),
+      publishedTime: createdAt,
+      modifiedTime: updatedAt,
     },
     twitter: {
       card: "summary_large_image",

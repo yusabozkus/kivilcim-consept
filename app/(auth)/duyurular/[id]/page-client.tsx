@@ -9,10 +9,29 @@ import { Announcement } from "@/lib/actions/announcements.actions";
 import { formatDistanceToNowStrict } from "date-fns";
 import { tr } from "date-fns/locale";
 import { ArrowLeft, Calendar, ArrowUp } from "lucide-react";
-import { BlockNoteView } from "@blocknote/shadcn";
-import { useCreateBlockNote } from "@blocknote/react";
 import { PartialBlock } from "@blocknote/core";
 import "@blocknote/shadcn/style.css";
+import dynamic from "next/dynamic";
+
+const BlockNoteView = dynamic(
+  async () => (await import("@blocknote/shadcn")).BlockNoteView,
+  { ssr: false }
+);
+
+function useSafeCreateBlockNote(content: PartialBlock[] | undefined) {
+  const [editor, setEditor] = useState<any>(null);
+
+  useEffect(() => {
+    import("@blocknote/react").then(({ useCreateBlockNote }) => {
+      const e = useCreateBlockNote({
+        initialContent: content,
+      });
+      setEditor(e);
+    });
+  }, [content]);
+
+  return editor;
+}
 
 const headerVariants = {
   hidden: { y: -100, opacity: 0 },
@@ -33,30 +52,31 @@ export default function PageClient({ announcement }: PageClientProps) {
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
-  const editor = useCreateBlockNote({
-    initialContent: announcement.content
+  const editor = useSafeCreateBlockNote(
+    announcement.content
       ? (announcement.content as any as PartialBlock[])
-      : undefined,
-  });
+      : undefined
+  );
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
-    };
-
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  };
+  const scrollToTop = () =>
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (!editor) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-neutral-500">
+        Yükleniyor...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
@@ -94,7 +114,6 @@ export default function PageClient({ announcement }: PageClientProps) {
             </Button>
           </motion.div>
         </nav>
-        
         <motion.div
           className="absolute bottom-0 left-0 right-0 h-1 bg-primary origin-left"
           style={{ scaleX }}
@@ -169,46 +188,26 @@ export default function PageClient({ announcement }: PageClientProps) {
         >
           <BlockNoteView editor={editor} editable={false} theme="light" />
         </motion.div>
-
-        <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full px-8 py-6 bg-primary/60 hover:bg-primary transition-all duration-300"
-          >
-            <Link href="/duyurular">
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Tüm Duyurulara Dön
-            </Link>
-          </Button>
-        </motion.div>
       </motion.article>
 
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow z-50"
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ 
-          opacity: showScrollTop ? 1 : 0,
-          scale: showScrollTop ? 1 : 0,
-        }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 260,
-          damping: 20
-        }}
-        style={{ pointerEvents: showScrollTop ? "auto" : "none" }}
-        aria-label="Yukarı çık"
-      >
-        <ArrowUp className="w-6 h-6" />
-      </motion.button>
+      {showScrollTop && (
+        <motion.button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow z-50"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          }}
+          aria-label="Yukarı çık"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </motion.button>
+      )}
     </div>
   );
 }
