@@ -93,12 +93,6 @@ const ContactUs = (props: Props) => {
             <ul className="space-y-6 lg:space-y-7">
               <li>
                 <a href="" className="flex flex-row items-center gap-4 sm:gap-6">
-                  <Phone className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
-                  <p className="text-base sm:text-lg font-medium">+90 555 555 55 55</p>
-                </a>
-              </li>
-              <li>
-                <a href="" className="flex flex-row items-center gap-4 sm:gap-6">
                   <Mail className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
                   <p className="text-base sm:text-lg font-medium">example@mail.com</p>
                 </a>

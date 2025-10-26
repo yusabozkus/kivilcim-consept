@@ -46,7 +46,7 @@ export const RegisterValidation = z.object({
       (year) => {
         const currentYear = new Date().getFullYear();
         const birthDate = parseInt(year);
-        return birthDate >= 1946 && birthDate <= 2006;
+        return birthDate >= 1946 && birthDate <= 2013;
       },
       { message: "Doğum yılı 1946-2006 arasında olmalıdır." }
     ),

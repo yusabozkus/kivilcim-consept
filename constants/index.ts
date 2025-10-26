@@ -91,6 +91,13 @@ export const socialAccounts = [
     icon: "whatsapp.png",
     link: "https://www.whatsapp.com/channel/0029VajFxC53GJOzhCfVJ71f",
   },
+  {
+    platform: "YouTube",
+    count: "10+",
+    text: "YouTube kanalımızda en yeni videoları, duyuruları ve etkinlikleri sizlerle paylaşıyoruz.",
+    icon: "youtube.png",
+    link: "https://www.youtube.com/@T%C3%BCrk%C3%BCnKanad%C4%B1",
+  },
 ];
 
 export const ourWorks = [
@@ -330,12 +337,6 @@ export const sidebarItems = [
     isShow: true,
   },
   {
-    title: "Duyurular",
-    url: "/announcements/add",
-    icon: Plus,
-    isShow: false,
-  },
-  {
     title: "Projeler",
     url: "#",
     icon: Layers,
@@ -348,4 +349,3 @@ export const sidebarItems = [
     isShow: true,
   },
 ];
-

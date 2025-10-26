@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
-// Tip tanımlamaları
 export type Announcement = Prisma.AnnouncementGetPayload<{
   include: {
     user: {
@@ -72,7 +71,9 @@ export async function getAnnouncements(
   }
 }
 
-export async function getAnnouncement(id: string): Promise<Announcement | null> {
+export async function getAnnouncement(
+  id: string
+): Promise<Announcement | null> {
   try {
     const announcement = await prisma.announcement.findUnique({
       where: { id },

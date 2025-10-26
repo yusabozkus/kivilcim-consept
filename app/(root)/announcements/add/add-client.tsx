@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/lib/auth";
-import { Image, Redo2, Undo2, X } from "lucide-react";
+import { ArrowLeft, Image, Redo2, Undo2, X } from "lucide-react";
 import React, { useState, useRef } from "react";
 import "@blocknote/core/fonts/inter.css";
 import { useCreateBlockNote } from "@blocknote/react";
@@ -121,6 +121,13 @@ export default function AddClient({ session }: { session: Session | null }) {
       <header className="w-full py-3 flex flex-row items-center justify-between border-b border-black/30 mb-10 sticky top-0 backdrop-blur-2xl z-50 bg-[#ffffff75]">
         <div className="flex flex-row items-center">
           <SidebarTrigger className="p-5 bg-accent mr-3" />
+          <button
+            onClick={() => router.back()}
+            className="bg-secondary p-2 rounded-xl"
+            disabled={isLoading}
+          >
+            <ArrowLeft size={20} />
+          </button>
           <button
             onClick={() => editor.undo()}
             className="bg-transparent p-2 rounded-xl hover:bg-secondary transition-all ease-linear"

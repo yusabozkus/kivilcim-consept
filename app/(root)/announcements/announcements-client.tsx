@@ -6,8 +6,8 @@ import {
   deleteAnnouncement,
 } from "@/lib/actions/announcements.actions";
 import { auth } from "@/lib/auth";
-import { formatDistanceToNow } from "date-fns";
-import { el, tr } from "date-fns/locale";
+import { formatDistanceToNowStrict } from "date-fns";
+import { tr } from "date-fns/locale";
 import { Edit3, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -93,7 +93,7 @@ export default function AnnouncementsClient({ session, data }: ClientProps) {
                     </div>
                   </div>
                   <p className="text-black/70 text-sm font-light">
-                    {formatDistanceToNow(new Date(item.createdAt), {
+                    {formatDistanceToNowStrict(new Date(item.createdAt), {
                       addSuffix: true,
                       locale: tr,
                     })}{" "}
