@@ -33,7 +33,7 @@ export async function generateMetadata({
   let imageUrl = defaultImage;
   if (announcement.coverImage) {
     if (announcement.coverImage.startsWith('data:image')) {
-      imageUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/announcement-image/${id}`;
+      imageUrl = `https://turkunkanadi.vercel.app/api/announcement-image/${id}`;
     } else {
       imageUrl = announcement.coverImage;
     }
