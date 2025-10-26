@@ -3,18 +3,37 @@ import { Metadata } from "next";
 import PageClient from "./page-client";
 import { getAnnouncement } from "@/lib/actions/announcements.actions";
 
+export const dynamic = "force-dynamic";
+
+const baseUrl = "https://turkunkanadi.vercel.app";
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-
   const announcement = await getAnnouncement(id);
 
   if (!announcement) {
     return {
       title: "Duyuru Bulunamadı",
+      description: "Aradığınız duyuru bulunamadı.",
+      openGraph: {
+        title: "Duyuru Bulunamadı",
+        description: "Aradığınız duyuru bulunamadı.",
+        url: `${baseUrl}/announcements/${id}`,
+        siteName: "Türk'ün Kanadı",
+        images: [
+          {
+            url: `${baseUrl}/default-og-image.jpg`,
+            width: 1200,
+            height: 630,
+            alt: "Duyuru Bulunamadı",
+          },
+        ],
+        type: "article",
+      },
     };
   }
 
@@ -28,24 +47,31 @@ export async function generateMetadata({
     return text.length > 150 ? text.slice(0, 150) + "..." : text;
   };
 
-  const defaultImage = "https://1.bp.blogspot.com/-DbBKHUSBX8Q/V4js7KRzqVI/AAAAAAAAl_4/mnaR-EXLOFc0D0E4Rhb2-3noXTWq7MvhQCLcB/s0/4k-ultrahd-turk-bayraklari-resimleri-18.jpg";
-  
+  const defaultImage =
+    "https://1.bp.blogspot.com/-DbBKHUSBX8Q/V4js7KRzqVI/AAAAAAAAl_4/mnaR-EXLOFc0D0E4Rhb2-3noXTWq7MvhQCLcB/s0/4k-ultrahd-turk-bayraklari-resimleri-18.jpg";
+
   let imageUrl = defaultImage;
+
   if (announcement.coverImage) {
-    if (announcement.coverImage.startsWith('data:image')) {
-      imageUrl = `https://turkunkanadi.vercel.app/api/announcement-image/${id}`;
-    } else {
+    if (announcement.coverImage.startsWith("data:image")) {
+      imageUrl = `${baseUrl}/api/announcement-image/${id}`;
+    } else if (announcement.coverImage.startsWith("http")) {
       imageUrl = announcement.coverImage;
+    } else {
+      imageUrl = `${baseUrl}${announcement.coverImage}`;
     }
   }
 
+  const textPreview = getTextPreview(announcement.content);
+
   return {
     title: announcement.title,
-    description: getTextPreview(announcement.content),
+    description: textPreview,
     openGraph: {
       siteName: "Türk'ün Kanadı",
+      url: `${baseUrl}/announcements/${id}`,
       title: announcement.title,
-      description: getTextPreview(announcement.content),
+      description: textPreview,
       images: [
         {
           url: imageUrl,
@@ -61,18 +87,23 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: announcement.title,
-      description: getTextPreview(announcement.content),
+      description: textPreview,
       images: [imageUrl],
     },
   };
 }
 
-export default async function page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-
   const announcement = await getAnnouncement(id);
+
   if (!announcement) {
     notFound();
   }
+
   return <PageClient announcement={announcement} />;
 }
