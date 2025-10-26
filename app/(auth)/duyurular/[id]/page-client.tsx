@@ -9,29 +9,19 @@ import { Announcement } from "@/lib/actions/announcements.actions";
 import { formatDistanceToNowStrict } from "date-fns";
 import { tr } from "date-fns/locale";
 import { ArrowLeft, Calendar, ArrowUp } from "lucide-react";
-import { PartialBlock } from "@blocknote/core";
-import "@blocknote/shadcn/style.css";
 import dynamic from "next/dynamic";
 
-const BlockNoteView = dynamic(
-  async () => (await import("@blocknote/shadcn")).BlockNoteView,
-  { ssr: false }
+const BlockNoteEditor = dynamic(
+  () => import("./BlockNoteEditor"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200 min-h-[200px] flex items-center justify-center">
+        <p className="text-neutral-500">İçerik yükleniyor...</p>
+      </div>
+    ),
+  }
 );
-
-function useSafeCreateBlockNote(content: PartialBlock[] | undefined) {
-  const [editor, setEditor] = useState<any>(null);
-
-  useEffect(() => {
-    import("@blocknote/react").then(({ useCreateBlockNote }) => {
-      const e = useCreateBlockNote({
-        initialContent: content,
-      });
-      setEditor(e);
-    });
-  }, [content]);
-
-  return editor;
-}
 
 const headerVariants = {
   hidden: { y: -100, opacity: 0 },
@@ -55,28 +45,13 @@ export default function PageClient({ announcement }: PageClientProps) {
     restDelta: 0.001,
   });
 
-  const editor = useSafeCreateBlockNote(
-    announcement.content
-      ? (announcement.content as any as PartialBlock[])
-      : undefined
-  );
-
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () =>
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-  if (!editor) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-neutral-500">
-        Yükleniyor...
-      </div>
-    );
-  }
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
@@ -181,12 +156,11 @@ export default function PageClient({ announcement }: PageClientProps) {
         </motion.h1>
 
         <motion.div
-          className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <BlockNoteView editor={editor} editable={false} theme="light" />
+          <BlockNoteEditor content={announcement.content} />
         </motion.div>
       </motion.article>
 

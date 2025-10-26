@@ -64,7 +64,6 @@ export async function generateMetadata({
 
   const textPreview = getTextPreview(announcement.content);
 
-  // Güvenli tarih parse
   const createdAt = new Date(announcement.createdAt).toISOString();
   const updatedAt = new Date(announcement.updatedAt).toISOString();
 
