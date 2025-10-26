@@ -5,12 +5,22 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { announcements } from "@/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Announcement } from "@/lib/actions/announcements.actions";
 
-type Props = {};
+type Props = {
+  data: {
+    announcements: Announcement[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  };
+};
 
-const Announcements = (props: Props) => {
+const Announcements = ({ data }: Props) => {
   return (
     <section
       className="w-full h-full flex flex-row items-center justify-center mt-24 py-24 bg-[#F2F4F3]"
@@ -36,27 +46,44 @@ const Announcements = (props: Props) => {
             modules={[Navigation, Pagination]}
             className="w-full !pb-12 rounded-2xl"
           >
-            {announcements.map((item, index) => (
-              <SwiperSlide key={item.id} className="!w-[372px]">
-                <div className="space-y-5">
-                  <div className="w-full h-[200px] rounded-2xl overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                    />
+            {data.announcements.map((item) => {
+              const getTextPreview = (content: any) => {
+                if (!content || !Array.isArray(content)) return "";
+                const firstTextBlock = content.find(
+                  (b: any) => b.type === "paragraph"
+                );
+                if (!firstTextBlock || !firstTextBlock.content) return "";
+                const text = firstTextBlock.content
+                  .map((c: any) => (c.text ? c.text : ""))
+                  .join(" ");
+                return text.length > 100 ? text.slice(0, 100) + "..." : text;
+              };
+
+              const previewText = getTextPreview(item.content);
+
+              return (
+                <SwiperSlide key={item.id} className="!w-[372px]">
+                  <div className="space-y-5">
+                    <div className="w-full h-[200px] rounded-2xl overflow-hidden">
+                      <img
+                        src={item.coverImage}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+
+                    <div>
+                      <h2 className="text-xl font-bold line-clamp-2">
+                        {item.title}
+                      </h2>
+                      <p className="text-gray-700 mt-2 line-clamp-3">
+                        {previewText}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl font-bold line-clamp-2">
-                      {item.title}
-                    </h2>
-                    <p className="text-base font-medium text-zinc-500 mt-3 line-clamp-3">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
 
           {/* Custom Navigation Buttons */}

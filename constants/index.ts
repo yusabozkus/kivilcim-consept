@@ -1,6 +1,19 @@
-'use client'
+"use client";
 
-import { Flag, Handshake, Scale, Rocket, Star, Globe2, Users, Home, User, Megaphone, Layers } from "lucide-react";
+import {
+  Flag,
+  Handshake,
+  Scale,
+  Rocket,
+  Star,
+  Globe2,
+  Users,
+  Home,
+  User,
+  Megaphone,
+  Layers,
+  Plus,
+} from "lucide-react";
 
 export const navItems = [
   { id: "#home", label: "Ana Sayfa" },
@@ -302,25 +315,37 @@ export const sidebarItems = [
     title: "Ana Sayfa",
     url: "/dashboard",
     icon: Home,
+    isShow: true,
   },
   {
     title: "Üyeler",
     url: "/users",
     icon: Users,
+    isShow: true,
   },
   {
     title: "Duyurular",
-    url: "#",
+    url: "/announcements",
     icon: Megaphone,
+    isShow: true,
+  },
+  {
+    title: "Duyurular",
+    url: "/announcements/add",
+    icon: Plus,
+    isShow: false,
   },
   {
     title: "Projeler",
     url: "#",
     icon: Layers,
+    isShow: true,
   },
   {
     title: "Profil",
     url: "#",
     icon: User,
+    isShow: true,
   },
 ];
+

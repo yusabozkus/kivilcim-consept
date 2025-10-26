@@ -30,7 +30,7 @@ export function AppSidebar() {
   } = useSidebar();
 
   const pathname = usePathname();
-
+  
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -60,34 +60,40 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-3">
             <SidebarMenu className="flex flex-col items-center justify-center">
-              {sidebarItems.map((item) => (
-                <SidebarMenuItem className="w-full" key={item.title}>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    asChild
-                    isActive={pathname == item.url}
-                    className={`${state === "collapsed" ? "" : "py-5 px-3"}`}
-                  >
-                    <a
-                      href={item.url}
-                      className={`${
-                        state === "collapsed"
-                          ? "flex flex-row items-center justify-center"
-                          : ""
-                      }`}
-                    >
-                      <item.icon className="!size-5.5" />
-                      <span
+              {sidebarItems.map((item) => {
+                if (item.isShow) {
+                  return (
+                    <SidebarMenuItem className="w-full" key={item.title}>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        asChild
+                        isActive={pathname.includes(item.url)}
                         className={`${
-                          state === "collapsed" ? "hidden" : "block"
-                        } ml-1 font-semibold`}
+                          state === "collapsed" ? "" : "py-5 px-3"
+                        }`}
                       >
-                        {item.title}
-                      </span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                        <a
+                          href={item.url}
+                          className={`${
+                            state === "collapsed"
+                              ? "flex flex-row items-center justify-center"
+                              : ""
+                          }`}
+                        >
+                          <item.icon className="!size-5.5" />
+                          <span
+                            className={`${
+                              state === "collapsed" ? "hidden" : "block"
+                            } ml-1 font-semibold`}
+                          >
+                            {item.title}
+                          </span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                }
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

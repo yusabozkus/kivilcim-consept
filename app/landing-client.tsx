@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import AboutUs from "@/components/landing/AboutUs";
 import Announcements from "@/components/landing/Announcements";
@@ -11,17 +11,28 @@ import React from "react";
 import { motion, easeOut } from "framer-motion";
 import Footer from "@/components/Footer";
 import { auth } from "@/lib/auth";
-
+import { Announcement } from "@/lib/actions/announcements.actions";
 
 type Session = typeof auth.$Infer.Session;
 
+type LandingClientProps = {
+  session: Session | null;
+  data: {
+    announcements: Announcement[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  };
+};
+
 export default function LandingClient({
   session,
-}: {
-  session: Session | null;
-}) {
-
-    const textVariant = {
+  data,
+}: LandingClientProps) {
+  const textVariant = {
     hidden: { opacity: 0, y: 30 },
     show: (i: number) => ({
       opacity: 1,
@@ -85,7 +96,7 @@ export default function LandingClient({
         <WhatWeDo />
         <AboutUs />
         <OurWorks />
-        <Announcements />
+        <Announcements data={data} />
         <ContactUs />
         <div className="w-full h-[100px]"></div>
         <Footer />

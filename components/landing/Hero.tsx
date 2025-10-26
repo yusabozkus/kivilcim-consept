@@ -33,7 +33,7 @@ const Hero = () => {
     >
       <div className="w-full max-w-default flex items-center justify-center h-[85vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] relative overflow-hidden rounded-xl sm:rounded-2xl">
         <motion.img
-          src="https://2.bp.blogspot.com/-pJGjr2Nl_rg/V4jtDfm-GxI/AAAAAAAAmAE/LlmgAgYg4iwSizqTWIHWFDH0Cf-q1tpfwCLcB/s0/4k-ultrahd-turk-bayraklari-resimleri-4.jpg"
+          src="https://isteataturk.com/gorseller/1570557176_ataturk.jpg"
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: easeOut }} 
@@ -81,52 +81,7 @@ const Hero = () => {
         </motion.div>
 
         {/* Desktop Social Stats */}
-        <motion.div
-          className="absolute bottom-0 right-0 px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 bg-white rounded-tl-2xl sm:rounded-tl-3xl md:rounded-tl-4xl 
-            hidden sm:flex flex-row items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {socialAccounts.map((itemData, index) => (
-            <motion.div
-              key={index}
-              variants={item}
-              className="flex flex-col items-center gap-1 sm:gap-2"
-            >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-800">
-                {itemData.count}
-              </h1>
-              <span className="text-neutral-500 text-xs sm:text-sm md:text-base">
-                {itemData.platform}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
 
-        {/* Mobile Social Stats */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 mx-4 mb-4 px-4 py-3 bg-white/90 backdrop-blur-sm rounded-xl 
-            flex sm:hidden flex-row items-center justify-around gap-2"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {socialAccounts.map((itemData, index) => (
-            <motion.div
-              key={index}
-              variants={item}
-              className="flex flex-col items-center gap-1"
-            >
-              <h1 className="text-lg font-semibold text-gray-800">
-                {itemData.count}
-              </h1>
-              <span className="text-neutral-600 text-xs">
-                {itemData.platform}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );

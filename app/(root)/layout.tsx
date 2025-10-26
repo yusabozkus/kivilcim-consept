@@ -18,6 +18,7 @@ export default async function AdminLayout({
   if (!session || session.user.role !== "admin") {
     redirect("/login");
   }
+
   return (
     <SidebarProvider>
       <AppSidebar />

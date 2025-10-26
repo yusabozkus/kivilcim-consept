@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="tr" className={roboto.variable}>
       <body className={`${roboto.className} antialiased h-screen bg-body`}>
-        <LenisProvider>{children}</LenisProvider>
+        {children}
         <Toaster />
       </body>
     </html>
