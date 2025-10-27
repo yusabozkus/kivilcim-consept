@@ -63,16 +63,16 @@ export default function Header({ session }: { session: Session | null }) {
 
   if (isShow) {
     return (
-      <header className="w-full flex flex-row items-center justify-between py-5">
-        <div className="flex flex-row items-center gap-4 md:gap-10">
-          <SidebarTrigger className="p-5 bg-accent" />
-          <Breadcrumb>
-            <BreadcrumbList>
+      <header className="w-full flex flex-row items-center justify-between py-3 sm:py-5 px-4 sm:px-0">
+        <div className="flex flex-row items-center gap-4 md:gap-10 flex-1 min-w-0">
+          <SidebarTrigger className="p-4 sm:p-5 bg-accent flex-shrink-0" />
+          <Breadcrumb className="min-w-0 flex-1">
+            <BreadcrumbList className="flex-wrap">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/dashboard" className="flex items-center gap-3">
-                    <Home className="size-5 text-zinc-400" />
-                    <span className="hidden sm:inline text-base text-zinc-400 font-semibold">
+                  <Link href="/dashboard" className="flex items-center gap-2 sm:gap-3">
+                    <Home className="size-4 sm:size-5 text-zinc-400 flex-shrink-0" />
+                    <span className="hidden md:inline text-sm sm:text-base text-zinc-400 font-semibold">
                       Ana Sayfa
                     </span>
                   </Link>
@@ -81,16 +81,16 @@ export default function Header({ session }: { session: Session | null }) {
 
               {breadcrumbItems.length > 0 &&
                 breadcrumbItems[0].path !== "/dashboard" &&
-                breadcrumbItems.map((item) => (
+                breadcrumbItems.map((item, index) => (
                   <React.Fragment key={item.path}>
                     <BreadcrumbSeparator />
-                    <BreadcrumbItem>
+                    <BreadcrumbItem className={!item.isLast ? "hidden sm:flex" : ""}>
                       {item.isLast ? (
                         <BreadcrumbPage className="flex items-center gap-2">
                           {item.Icon && (
-                            <item.Icon className="size-5 text-black" />
+                            <item.Icon className="size-4 sm:size-5 text-black flex-shrink-0" />
                           )}
-                          <span className="hidden sm:inline text-base text-black font-semibold">
+                          <span className="text-sm sm:text-base text-black font-semibold truncate">
                             {item.displayName}
                           </span>
                         </BreadcrumbPage>
@@ -101,9 +101,9 @@ export default function Header({ session }: { session: Session | null }) {
                             className="flex items-center gap-2"
                           >
                             {item.Icon && (
-                              <item.Icon className="size-5 text-zinc-400" />
+                              <item.Icon className="size-4 sm:size-5 text-zinc-400 flex-shrink-0" />
                             )}
-                            <span className="hidden sm:inline text-base text-zinc-400 font-semibold">
+                            <span className="hidden md:inline text-sm sm:text-base text-zinc-400 font-semibold truncate">
                               {item.displayName}
                             </span>
                           </Link>
@@ -115,24 +115,28 @@ export default function Header({ session }: { session: Session | null }) {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        <div>
+        <div className="flex-shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex flex-row items-center gap-4 cursor-pointer hover:bg-accent p-2 rounded-xl">
+              <div className="flex flex-row items-center gap-2 sm:gap-4 cursor-pointer hover:bg-accent p-1.5 sm:p-2 rounded-xl">
                 {session?.user.image ? (
                   <img
                     src={session.user.image}
-                    className="size-11 object-cover rounded-full"
+                    className="size-8 sm:size-11 object-cover rounded-full flex-shrink-0"
+                    alt={session.user.name}
                   />
                 ) : (
                   <img
                     src={avatarUrl}
-                    className="size-11 object-cover rounded-full"
+                    className="size-8 sm:size-11 object-cover rounded-full flex-shrink-0"
+                    alt={session?.user.name}
                   />
                 )}
-                <div>
-                  <h1 className="text-base font-bold">{session?.user.name}</h1>
-                  <p className="text-sm font-medium text-primary capitalize">
+                <div className="hidden lg:block">
+                  <h1 className="text-sm sm:text-base font-bold truncate max-w-[150px]">
+                    {session?.user.name}
+                  </h1>
+                  <p className="text-xs sm:text-sm font-medium text-primary capitalize">
                     {session?.user.role}
                   </p>
                 </div>
@@ -150,37 +154,39 @@ export default function Header({ session }: { session: Session | null }) {
                   {session?.user.image ? (
                     <img
                       src={session.user.image}
-                      className="size-11 object-cover rounded-full"
+                      className="size-11 object-cover rounded-full flex-shrink-0"
+                      alt={session.user.name}
                     />
                   ) : (
                     <img
                       src={avatarUrl}
-                      className="size-11 object-cover rounded-full"
+                      className="size-11 object-cover rounded-full flex-shrink-0"
+                      alt={session?.user.name}
                     />
                   )}
-                  <div>
-                    <h1 className="text-base font-bold">
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-base font-bold truncate">
                       {session?.user.name}
                     </h1>
-                    <h1 className="text-sm font-medium text-zinc-400 -mt-0.5">
+                    <h1 className="text-sm font-medium text-zinc-400 -mt-0.5 truncate">
                       {session?.user.email}
                     </h1>
                   </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuGroup>
-                <DropdownMenuItem className="flex flex-row items-center gap-3">
-                  <User className="size-4" />
+                <DropdownMenuItem className="flex flex-row items-center gap-3 cursor-pointer">
+                  <User className="size-4 flex-shrink-0" />
                   Profil
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex flex-row items-center gap-3">
-                  <Settings className="size-4" />
+                <DropdownMenuItem className="flex flex-row items-center gap-3 cursor-pointer">
+                  <Settings className="size-4 flex-shrink-0" />
                   Ayarlar
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut />
+              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                <LogOut className="flex-shrink-0" />
                 Çıkış Yap
               </DropdownMenuItem>
             </DropdownMenuContent>

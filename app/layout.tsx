@@ -36,7 +36,7 @@ export default async function RootLayout({
     <html lang="tr" className={roboto.variable}>
       <body className={`${roboto.className} antialiased h-screen bg-body`}>
         {children}
-        <Toaster />
+        <Toaster richColors closeButton position="top-center" />
       </body>
     </html>
   );

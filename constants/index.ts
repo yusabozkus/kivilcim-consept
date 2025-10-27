@@ -338,7 +338,7 @@ export const sidebarItems = [
   },
   {
     title: "Projeler",
-    url: "#",
+    url: "/works",
     icon: Layers,
     isShow: true,
   },

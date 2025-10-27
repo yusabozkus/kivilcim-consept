@@ -34,6 +34,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   Announcement  Announcement[]
+  Work          Work[]
 
   @@unique([email])
   @@map("user")
@@ -87,7 +88,7 @@ model Verification {
 model Announcement {
   id         String   @id @default(cuid())
   title      String
-  coverImage String  @db.Text
+  coverImage String   @db.Text
   content    Json
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -95,4 +96,17 @@ model Announcement {
   updatedAt  DateTime @updatedAt
 
   @@map("announcement")
+}
+
+model Work {
+  id         String   @id @default(cuid())
+  title      String
+  coverImage String   @db.Text
+  content    String   @db.Text
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("work")
 }
