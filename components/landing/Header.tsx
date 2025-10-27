@@ -293,13 +293,13 @@ const Header = ({ session }: { session: Session | null }) => {
                     onClick={() => setIsMobileMenuOpen(false)}
                     asChild
                   >
-                    <Link href={"/auth/login"}>Giriş Yap</Link>
+                    <Link href={"/login"}>Giriş Yap</Link>
                   </Button>
                   <Button
                     className="w-full rounded-xl py-6 text-base font-medium bg-neutral-200 text-black border border-neutral-200 hover:bg-transparent hover:text-primary hover:border-primary transition-all"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Link href="/auth/register">Aramıza Katıl!</Link>
+                    <Link href="/register">Aramıza Katıl!</Link>
                   </Button>
                 </motion.div>
               </div>
