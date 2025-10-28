@@ -12,7 +12,6 @@ import {
   User,
   Megaphone,
   Layers,
-  Plus,
 } from "lucide-react";
 
 export const navItems = [
@@ -344,7 +343,7 @@ export const sidebarItems = [
   },
   {
     title: "Profil",
-    url: "#",
+    url: "/profile",
     icon: User,
     isShow: true,
   },

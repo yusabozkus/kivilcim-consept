@@ -20,7 +20,7 @@ export type Announcement = Prisma.AnnouncementGetPayload<{
 }>;
 
 export interface AnnouncementsResponse {
-  announcements: Announcement[];
+  data: Announcement[];
   pagination: {
     page: number;
     limit: number;
@@ -57,7 +57,7 @@ export async function getAnnouncements(
     ]);
 
     return {
-      announcements,
+      data: announcements,
       pagination: {
         page,
         limit,

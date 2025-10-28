@@ -28,10 +28,10 @@ const item = {
 const Hero = () => {
   return (
     <section
-      className="w-full min-h-screen flex flex-col pt-12 sm:pt-16 md:pt-20 items-center justify-center px-4 lg:px-0"
+      className="w-full h-[80vh] lg:min-h-screen flex flex-col pt-20 sm:pt-16 md:pt-20 items-center justify-center px-4 lg:px-0"
       id="home"
     >
-      <div className="w-full max-w-default flex items-center justify-center h-[85vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] relative overflow-hidden rounded-xl sm:rounded-2xl">
+      <div className="w-full max-w-default flex items-center justify-center h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] relative overflow-hidden rounded-xl sm:rounded-2xl">
         <motion.img
           src="https://isteataturk.com/gorseller/1570557176_ataturk.jpg"
           initial={{ scale: 1.1, opacity: 0 }}

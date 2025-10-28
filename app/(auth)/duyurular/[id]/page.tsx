@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import PageClient from "./page-client";
 import { getAnnouncement } from "@/lib/actions/announcements.actions";
+import { site_config } from "@/app/layout";
 
 export const dynamic = "force-dynamic";
 
@@ -17,13 +18,13 @@ export async function generateMetadata({
 
   if (!announcement) {
     return {
-      title: "Duyuru Bulunamadı",
+      title: `Duyuru Bulunamadı - ${site_config.title}`,
       description: "Aradığınız duyuru bulunamadı.",
       openGraph: {
-        title: "Duyuru Bulunamadı",
+        title: `Duyuru Bulunamadı - ${site_config.title}`,
         description: "Aradığınız duyuru bulunamadı.",
         url: `${baseUrl}/duyurular/${id}`,
-        siteName: "Türk'ün Kanadı",
+        siteName: site_config.title,
         images: [
           {
             url: `${baseUrl}/default-og-image.jpg`,
@@ -47,10 +48,7 @@ export async function generateMetadata({
     return text.length > 150 ? text.slice(0, 150) + "..." : text;
   };
 
-  const defaultImage =
-    "https://1.bp.blogspot.com/-DbBKHUSBX8Q/V4js7KRzqVI/AAAAAAAAl_4/mnaR-EXLOFc0D0E4Rhb2-3noXTWq7MvhQCLcB/s0/4k-ultrahd-turk-bayraklari-resimleri-18.jpg";
-
-  let imageUrl = defaultImage;
+  let imageUrl = "";
 
   if (announcement.coverImage) {
     if (announcement.coverImage.startsWith("data:image")) {
@@ -68,12 +66,12 @@ export async function generateMetadata({
   const updatedAt = new Date(announcement.updatedAt).toISOString();
 
   return {
-    title: announcement.title,
+    title: `${announcement.title} - ${site_config.title}`,
     description: textPreview,
     openGraph: {
-      siteName: "Türk'ün Kanadı",
+      siteName: site_config.title,
       url: `${baseUrl}/duyurular/${id}`,
-      title: announcement.title,
+      title: `${announcement.title} - ${site_config.title}`,
       description: textPreview,
       images: [
         {
@@ -89,7 +87,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: announcement.title,
+      title: `${announcement.title} - ${site_config.title}`,
       description: textPreview,
       images: [imageUrl],
     },

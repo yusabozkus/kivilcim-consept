@@ -3,10 +3,7 @@ import AnnouncementsClient from "./announcements-client";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@/lib/generated/prisma";
 import { getAnnouncements } from "@/lib/actions/announcements.actions";
-
-const prisma = new PrismaClient();
 
 export default async function AnnouncementsPage() {
   const session = await auth.api.getSession({
@@ -19,5 +16,5 @@ export default async function AnnouncementsPage() {
 
   const initialData = await getAnnouncements(1, 10);
 
-  return <AnnouncementsClient session={session} data={initialData} />;
+  return <AnnouncementsClient session={session} announcements={initialData} />;
 }

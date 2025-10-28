@@ -12,13 +12,23 @@ import { motion, easeOut } from "framer-motion";
 import Footer from "@/components/Footer";
 import { auth } from "@/lib/auth";
 import { Announcement } from "@/lib/actions/announcements.actions";
+import { Work } from "@/lib/actions/work.actions";
 
 type Session = typeof auth.$Infer.Session;
 
 type LandingClientProps = {
   session: Session | null;
-  data: {
-    announcements: Announcement[];
+  announcements: {
+    data: Announcement[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  };
+  works: {
+    data: Work[];
     pagination: {
       page: number;
       limit: number;
@@ -30,7 +40,8 @@ type LandingClientProps = {
 
 export default function LandingClient({
   session,
-  data,
+  announcements,
+  works
 }: LandingClientProps) {
   const textVariant = {
     hidden: { opacity: 0, y: 30 },
@@ -95,8 +106,8 @@ export default function LandingClient({
         </div>
         <WhatWeDo />
         <AboutUs />
-        <OurWorks />
-        <Announcements data={data} />
+        <OurWorks works={works} />
+        <Announcements announcements={announcements} />
         <ContactUs />
         <div className="w-full h-[100px]"></div>
         <Footer />

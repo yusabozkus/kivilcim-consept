@@ -40,8 +40,8 @@ const itemVariants = {
 };
 
 type ClientProps = {
-  data: {
-    announcements: Announcement[];
+  announcements: {
+    data: Announcement[];
     pagination: {
       page: number;
       limit: number;
@@ -51,7 +51,7 @@ type ClientProps = {
   };
 };
 
-export default function PageClient({ data }: ClientProps) {
+export default function PageClient({ announcements }: ClientProps) {
   const getTextPreview = (content: any) => {
     if (!content || !Array.isArray(content)) return "";
     const firstTextBlock = content.find((b: any) => b.type === "paragraph");
@@ -61,7 +61,7 @@ export default function PageClient({ data }: ClientProps) {
       .join(" ");
     return text.length > 150 ? text.slice(0, 150) + "..." : text;
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
       <motion.header
@@ -71,16 +71,18 @@ export default function PageClient({ data }: ClientProps) {
         animate="show"
       >
         <nav className="m-auto max-w-[1200px] px-6 w-full h-full flex flex-row items-center justify-between">
-          <motion.div
-            className="flex flex-row items-center gap-3 sm:gap-4"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
-          >
-            <Logo />
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
-              Türk'ün Kanadı
-            </h1>
-          </motion.div>
+          <Link href={"/"}>
+            <motion.div
+              className="flex flex-row items-center gap-3 sm:gap-4"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+            >
+              <Logo />
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
+                Türk'ün Kanadı
+              </h1>
+            </motion.div>
+          </Link>
 
           <motion.div
             className="flex flex-row gap-2"
@@ -119,7 +121,7 @@ export default function PageClient({ data }: ClientProps) {
           animate="show"
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {data.announcements.map((item) => {
+          {announcements.data.map((item) => {
             const previewText = getTextPreview(item.content);
 
             return (
@@ -192,7 +194,7 @@ export default function PageClient({ data }: ClientProps) {
           })}
         </motion.div>
 
-        {data.announcements.length === 0 && (
+        {announcements.pagination.total === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

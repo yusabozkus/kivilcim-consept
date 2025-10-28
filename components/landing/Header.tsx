@@ -123,16 +123,18 @@ const Header = ({ session }: { session: Session | null }) => {
         animate="show"
       >
         <nav className="m-auto max-w-default w-full h-full flex flex-row items-center justify-between">
-          <motion.div
-            className="flex flex-row items-center gap-3 sm:gap-4"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
-          >
-            <Logo />
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold">
-              Türk'ün Kanadı
-            </h1>
-          </motion.div>
+          <Link href={"/"}>
+            <motion.div
+              className="flex flex-row items-center gap-3 sm:gap-4"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+            >
+              <Logo />
+              <h1 className="text-xl lg:text-2xl font-extrabold">
+                Türk'ün Kanadı
+              </h1>
+            </motion.div>
+          </Link>
 
           <ul className="hidden lg:flex flex-row items-end gap-7 text-base font-normal">
             {navItems.map((item, i) => (
@@ -192,21 +194,21 @@ const Header = ({ session }: { session: Session | null }) => {
                   <Link href="/register">Aramıza Katıl!</Link>
                 </Button>
               </motion.div>
-
-              <motion.button
-                className="lg:hidden p-2 hover:bg-black/10 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </motion.button>
             </>
           )}
+
+          <motion.button
+            className="lg:hidden p-2 hover:bg-black/10 rounded-lg transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </motion.button>
         </nav>
       </motion.header>
 
@@ -288,19 +290,31 @@ const Header = ({ session }: { session: Session | null }) => {
                   initial="hidden"
                   animate="show"
                 >
-                  <Button
-                    className="w-full rounded-xl py-6 text-base font-medium border border-primary hover:bg-transparent hover:text-primary transition-all"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    asChild
-                  >
-                    <Link href={"/login"}>Giriş Yap</Link>
-                  </Button>
-                  <Button
-                    className="w-full rounded-xl py-6 text-base font-medium bg-neutral-200 text-black border border-neutral-200 hover:bg-transparent hover:text-primary hover:border-primary transition-all"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Link href="/register">Aramıza Katıl!</Link>
-                  </Button>
+                  {!session?.user ? (
+                    <>
+                      <Button
+                        className="w-full rounded-xl py-6 text-base font-medium border border-primary hover:bg-transparent hover:text-primary transition-all"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        asChild
+                      >
+                        <Link href={"/login"}>Giriş Yap</Link>
+                      </Button>
+                      <Button
+                        className="w-full rounded-xl py-6 text-base font-medium bg-neutral-200 text-black border border-neutral-200 hover:bg-transparent hover:text-primary hover:border-primary transition-all"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Link href="/register">Aramıza Katıl!</Link>
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      className="w-full rounded-xl py-6 text-base font-medium border border-primary hover:bg-transparent hover:text-primary transition-all"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      asChild
+                    >
+                      <Link href={"/dashboard"}>Dashboard</Link>
+                    </Button>
+                  )}
                 </motion.div>
               </div>
             </motion.div>

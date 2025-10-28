@@ -20,7 +20,7 @@ export type Work = Prisma.WorkGetPayload<{
 }>;
 
 export interface WorksResponse {
-  works: Work[];
+  data: Work[];
   pagination: {
     page: number;
     limit: number;
@@ -51,7 +51,7 @@ export async function getWorks(
     ]);
 
     return {
-      works,
+      data: works,
       pagination: {
         page,
         limit,

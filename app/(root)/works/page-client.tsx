@@ -19,7 +19,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { createWork, deleteWork, updateWork, Work } from "@/lib/actions/work.actions";
+import {
+  createWork,
+  deleteWork,
+  updateWork,
+  Work,
+} from "@/lib/actions/work.actions";
 import { formatDistanceToNowStrict } from "date-fns";
 import { tr } from "date-fns/locale";
 import {
@@ -38,8 +43,8 @@ type Session = typeof auth.$Infer.Session;
 
 type ClientProps = {
   session: Session;
-  data: {
-    works: Work[];
+  works: {
+    data: Work[];
     pagination: {
       page: number;
       limit: number;
@@ -49,7 +54,7 @@ type ClientProps = {
   };
 };
 
-export default function PageClient({ session, data }: ClientProps) {
+export default function PageClient({ session, works }: ClientProps) {
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
@@ -154,9 +159,11 @@ export default function PageClient({ session, data }: ClientProps) {
     <div className="px-4 sm:px-6 lg:px-0 py-4 sm:py-6">
       <div className="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projeler</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Projeler
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
-            {data.pagination.total} proje bulundu
+            {works.pagination.total} proje bulundu
           </p>
         </div>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -257,7 +264,11 @@ export default function PageClient({ session, data }: ClientProps) {
 
             <SheetFooter className="pt-6 border-t gap-2 flex-col sm:flex-row">
               <SheetClose asChild>
-                <Button variant="outline" className="flex-1 w-full" onClick={handleCloseSheet}>
+                <Button
+                  variant="outline"
+                  className="flex-1 w-full"
+                  onClick={handleCloseSheet}
+                >
                   İptal
                 </Button>
               </SheetClose>
@@ -267,7 +278,13 @@ export default function PageClient({ session, data }: ClientProps) {
                 className="flex-1 gap-2 w-full"
               >
                 {isLoading && <Spinner />}
-                {isLoading ? (editingWork ? "Güncelleniyor..." : "Kaydediliyor...") : (editingWork ? "Güncelle" : "Kaydet")}
+                {isLoading
+                  ? editingWork
+                    ? "Güncelleniyor..."
+                    : "Kaydediliyor..."
+                  : editingWork
+                  ? "Güncelle"
+                  : "Kaydet"}
               </Button>
             </SheetFooter>
           </SheetContent>
@@ -275,7 +292,7 @@ export default function PageClient({ session, data }: ClientProps) {
       </div>
 
       <div className="space-y-4">
-        {data.pagination.total === 0 ? (
+        {works.pagination.total === 0 ? (
           <div className="text-center py-16">
             <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
               <Image size={36} className="text-gray-400" />
@@ -288,7 +305,7 @@ export default function PageClient({ session, data }: ClientProps) {
             </p>
           </div>
         ) : (
-          data.works.map((item) => (
+          works.data.map((item) => (
             <div
               key={item.id}
               className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 hover:shadow-md transition-shadow"
@@ -335,9 +352,9 @@ export default function PageClient({ session, data }: ClientProps) {
                 </div>
 
                 <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <Button
+                    variant="outline"
+                    size="sm"
                     className="gap-2 flex-1 sm:flex-none"
                     onClick={() => handleOpenEditSheet(item)}
                   >
@@ -370,7 +387,9 @@ export default function PageClient({ session, data }: ClientProps) {
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-                        <AlertDialogCancel className="w-full sm:w-auto">Vazgeç</AlertDialogCancel>
+                        <AlertDialogCancel className="w-full sm:w-auto">
+                          Vazgeç
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleDelete(item.id)}
                           className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"

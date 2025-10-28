@@ -1,11 +1,10 @@
+import React from "react";
+import PageClient from "./page-client";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import React from "react";
-import PageClient from "./page-client";
-import { getWorks } from "@/lib/actions/work.actions";
 
-export default async function WorkPage() {
+export default async function ProfilePage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -13,8 +12,5 @@ export default async function WorkPage() {
   if (!session || session.user.role !== "admin") {
     redirect("/login");
   }
-
-  const data = await getWorks();
-
-  return <PageClient works={data} session={session} />;
+  return <PageClient />;
 }

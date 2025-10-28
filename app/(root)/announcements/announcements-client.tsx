@@ -28,8 +28,8 @@ type Session = typeof auth.$Infer.Session;
 
 type ClientProps = {
   session: Session;
-  data: {
-    announcements: Announcement[];
+  announcements: {
+    data: Announcement[];
     pagination: {
       page: number;
       limit: number;
@@ -39,7 +39,7 @@ type ClientProps = {
   };
 };
 
-export default function AnnouncementsClient({ session, data }: ClientProps) {
+export default function AnnouncementsClient({ session, announcements }: ClientProps) {
   const handleDelete = async (id: string) => {
     if (!id) {
       toast.error("Duyuru silinemedi!");
@@ -58,7 +58,7 @@ export default function AnnouncementsClient({ session, data }: ClientProps) {
             Duyurular
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            {data.pagination.total} duyuru bulundu
+            {announcements.pagination.total} duyuru bulundu
           </p>
         </div>
         <Button asChild>
@@ -67,7 +67,7 @@ export default function AnnouncementsClient({ session, data }: ClientProps) {
       </div>
 
       <div className="space-y-4">
-        {data.pagination.total === 0 ? (
+        {announcements.pagination.total === 0 ? (
           <div className="text-center py-16">
             <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
               <Image size={36} className="text-gray-400" />
@@ -80,7 +80,7 @@ export default function AnnouncementsClient({ session, data }: ClientProps) {
             </p>
           </div>
         ) : (
-          data.announcements.map((item) => {
+          announcements.data.map((item) => {
             const getTextPreview = (content: any) => {
               if (!content || !Array.isArray(content)) return "";
               const firstTextBlock = content.find(

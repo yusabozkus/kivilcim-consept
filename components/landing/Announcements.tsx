@@ -10,8 +10,8 @@ import { Announcement } from "@/lib/actions/announcements.actions";
 import Link from "next/link";
 
 type Props = {
-  data: {
-    announcements: Announcement[];
+  announcements: {
+    data: Announcement[];
     pagination: {
       page: number;
       limit: number;
@@ -21,7 +21,7 @@ type Props = {
   };
 };
 
-const Announcements = ({ data }: Props) => {
+const Announcements = ({ announcements }: Props) => {
   return (
     <section
       className="w-full h-full flex flex-row items-center justify-center mt-24 py-24 bg-[#F2F4F3]"
@@ -55,7 +55,7 @@ const Announcements = ({ data }: Props) => {
             modules={[Navigation, Pagination]}
             className="w-full !pb-12 rounded-2xl"
           >
-            {data.announcements.map((item) => {
+            {announcements.data.map((item) => {
               const getTextPreview = (content: any) => {
                 if (!content || !Array.isArray(content)) return "";
                 const firstTextBlock = content.find(

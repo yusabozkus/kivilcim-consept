@@ -11,17 +11,14 @@ import { tr } from "date-fns/locale";
 import { ArrowLeft, Calendar, ArrowUp } from "lucide-react";
 import dynamic from "next/dynamic";
 
-const BlockNoteEditor = dynamic(
-  () => import("./BlockNoteEditor"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200 min-h-[200px] flex items-center justify-center">
-        <p className="text-neutral-500">İçerik yükleniyor...</p>
-      </div>
-    ),
-  }
-);
+const BlockNoteEditor = dynamic(() => import("./BlockNoteEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200 min-h-[200px] flex items-center justify-center">
+      <p className="text-neutral-500">İçerik yükleniyor...</p>
+    </div>
+  ),
+});
 
 const headerVariants = {
   hidden: { y: -100, opacity: 0 },
@@ -62,16 +59,18 @@ export default function PageClient({ announcement }: PageClientProps) {
         animate="show"
       >
         <nav className="m-auto max-w-[1200px] px-6 w-full h-full flex flex-row items-center justify-between">
-          <motion.div
-            className="flex flex-row items-center gap-3 sm:gap-4"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
-          >
-            <Logo />
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
-              Türk'ün Kanadı
-            </h1>
-          </motion.div>
+          <Link href={"/"}>
+            <motion.div
+              className="flex flex-row items-center gap-3 sm:gap-4"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+            >
+              <Logo />
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
+                Türk'ün Kanadı
+              </h1>
+            </motion.div>
+          </Link>
 
           <motion.div
             initial={{ opacity: 0, x: 40 }}
