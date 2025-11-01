@@ -18,6 +18,16 @@ interface SignUpExtra {
   image?: string;
 }
 
+interface UpdateProfileData {
+  name: string;
+  email: string;
+  phoneNumber: string | null;
+  profession: string | null;
+  department: string | null;
+  city: string | null;
+}
+
+
 export const signUp = async (
   email: string,
   password: string,
@@ -113,4 +123,90 @@ export const signOut = async () => {
   const result = await auth.api.signOut({ headers: await headers() });
 
   return result;
+};
+
+export const updateProfileImage = async (userId: string, image: string) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        image: image,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Profil resmi başarıyla güncellendi",
+      data: updatedUser,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || "Profil resmi güncellenirken bir hata oluştu",
+    };
+  }
+};
+
+export const updateProfile = async (
+  userId: string,
+  data: UpdateProfileData
+) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        profession: data.profession,
+        department: data.department,
+        city: data.city,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Profil bilgileri başarıyla güncellendi",
+      data: updatedUser,
+    };
+  } catch (error: any) {
+    let errorMessage = "Profil güncellenirken bir hata oluştu";
+
+    if (error.code === "P2002") {
+      errorMessage = "Bu email adresi zaten kullanımda";
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
+
+export const signOutFromAllDevices = async (userId: string) => {
+  try {
+    await prisma.session.deleteMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    await auth.api.signOut({ headers: await headers() });
+
+    return {
+      success: true,
+      message: "Tüm cihazlardan başarıyla çıkış yapıldı",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || "Çıkış yapılırken bir hata oluştu",
+    };
+  }
 };

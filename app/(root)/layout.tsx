@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import SettingsModalWrapper from "@/components/SettingsModalWrapper";
 
 export default async function AdminLayout({
   children,
@@ -25,6 +26,7 @@ export default async function AdminLayout({
       <main className="w-full h-screen max-w-default m-auto">
         <Header session={session} />
         {children}
+        <SettingsModalWrapper session={session} />
       </main>
     </SidebarProvider>
   );

@@ -25,16 +25,12 @@ import {
   CheckCircle,
   ChevronDownIcon,
   ChevronsUpDown,
-  Clock,
-  Globe2,
   Handshake,
-  Heart,
   Mail,
   Phone,
   School,
   Star,
   User,
-  Users,
 } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -49,9 +45,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { cn, generatePassword } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
-import { UserData } from "lenis";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/lib/actions/auth-actions";

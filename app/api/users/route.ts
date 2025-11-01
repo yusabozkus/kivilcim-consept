@@ -32,6 +32,7 @@ export async function GET(req: Request) {
         city: true,
         createdAt: true,
         updatedAt: true,
+        image: true,
       },
     });
 

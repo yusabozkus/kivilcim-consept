@@ -1,7 +1,5 @@
 "use client";
 
-import { Calendar, Home, Inbox, Search, Settings, Users } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -17,20 +15,17 @@ import {
 import Logo from "./Logo";
 import { usePathname } from "next/navigation";
 import { sidebarItems } from "@/constants";
+import { useSettingsModal } from "@/hooks/use-settings-modal";
+import { User } from "lucide-react";
 
 export function AppSidebar() {
   const {
     state,
-    open,
-    setOpen,
-    openMobile,
-    setOpenMobile,
-    isMobile,
-    toggleSidebar,
   } = useSidebar();
 
   const pathname = usePathname();
-  
+  const { open, isOpen } = useSettingsModal();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -94,6 +89,32 @@ export function AppSidebar() {
                   );
                 }
               })}
+              <SidebarMenuItem className="w-full">
+                <SidebarMenuButton
+                  tooltip={"Profil Bilgilerini Görüntüle"}
+                  asChild
+                  onClick={() => open("profile")}
+                  isActive={isOpen}
+                  className={`${state === "collapsed" ? "" : "py-5 px-3"}`}
+                >
+                  <div
+                    className={`cursor-pointer select-none ${
+                      state === "collapsed"
+                        ? "flex flex-row items-center justify-center"
+                        : ""
+                    }`}
+                  >
+                    <User className="!size-5.5" />
+                    <span
+                      className={`${
+                        state === "collapsed" ? "hidden" : "block"
+                      } ml-1 font-semibold`}
+                    >
+                      Profil
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

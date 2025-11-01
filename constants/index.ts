@@ -341,10 +341,4 @@ export const sidebarItems = [
     icon: Layers,
     isShow: true,
   },
-  {
-    title: "Profil",
-    url: "/profile",
-    icon: User,
-    isShow: true,
-  },
 ];

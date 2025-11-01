@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,12 +25,15 @@ import { Home, LogOut, Settings, User } from "lucide-react";
 import { sidebarItems } from "@/constants";
 import { auth } from "@/lib/auth";
 import { signOut } from "@/lib/actions/auth-actions";
+import SettingsModal from "./SettingsModal";
+import { useSettingsModal } from "@/hooks/use-settings-modal";
 
 type Session = typeof auth.$Infer.Session;
 
 export default function Header({ session }: { session: Session | null }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { open } = useSettingsModal();
 
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
@@ -70,7 +73,10 @@ export default function Header({ session }: { session: Session | null }) {
             <BreadcrumbList className="flex-wrap">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href="/dashboard" className="flex items-center gap-2 sm:gap-3">
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 sm:gap-3"
+                  >
                     <Home className="size-4 sm:size-5 text-zinc-400 flex-shrink-0" />
                     <span className="hidden md:inline text-sm sm:text-base text-zinc-400 font-semibold">
                       Ana Sayfa
@@ -84,7 +90,9 @@ export default function Header({ session }: { session: Session | null }) {
                 breadcrumbItems.map((item, index) => (
                   <React.Fragment key={item.path}>
                     <BreadcrumbSeparator />
-                    <BreadcrumbItem className={!item.isLast ? "hidden sm:flex" : ""}>
+                    <BreadcrumbItem
+                      className={!item.isLast ? "hidden sm:flex" : ""}
+                    >
                       {item.isLast ? (
                         <BreadcrumbPage className="flex items-center gap-2">
                           {item.Icon && (
@@ -175,17 +183,26 @@ export default function Header({ session }: { session: Session | null }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuGroup>
-                <DropdownMenuItem className="flex flex-row items-center gap-3 cursor-pointer">
+                <DropdownMenuItem
+                  onClick={() => open("profile")}
+                  className="flex flex-row items-center gap-3 cursor-pointer"
+                >
                   <User className="size-4 flex-shrink-0" />
                   Profil
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex flex-row items-center gap-3 cursor-pointer">
+                <DropdownMenuItem
+                  onClick={() => open("general")}
+                  className="flex flex-row items-center gap-3 cursor-pointer"
+                >
                   <Settings className="size-4 flex-shrink-0" />
                   Ayarlar
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="cursor-pointer"
+              >
                 <LogOut className="flex-shrink-0" />
                 Çıkış Yap
               </DropdownMenuItem>

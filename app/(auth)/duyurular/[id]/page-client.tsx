@@ -10,6 +10,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { tr } from "date-fns/locale";
 import { ArrowLeft, Calendar, ArrowUp } from "lucide-react";
 import dynamic from "next/dynamic";
+import ShareAnnouncement from "@/components/ShareAnnouncement";
 
 const BlockNoteEditor = dynamic(() => import("./BlockNoteEditor"), {
   ssr: false,
@@ -71,6 +72,10 @@ export default function PageClient({ announcement }: PageClientProps) {
               </h1>
             </motion.div>
           </Link>
+
+          <h1 className="text-xl font-extrabold hidden lg:block">
+            {announcement.title}
+          </h1>
 
           <motion.div
             initial={{ opacity: 0, x: 40 }}
@@ -162,24 +167,26 @@ export default function PageClient({ announcement }: PageClientProps) {
           <BlockNoteEditor content={announcement.content} />
         </motion.div>
       </motion.article>
-
+      <ShareAnnouncement announcement={announcement} />
       {showScrollTop && (
-        <motion.button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-primary text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow z-50"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-          }}
-          aria-label="Yukarı çık"
-        >
-          <ArrowUp className="w-6 h-6" />
-        </motion.button>
+        <div className="fixed bottom-8 right-8 flex flex-col gap-2">
+          <motion.button
+            onClick={scrollToTop}
+            className="bg-primary text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow z-50"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
+            aria-label="Yukarı çık"
+          >
+            <ArrowUp className="w-6 h-6" />
+          </motion.button>
+        </div>
       )}
     </div>
   );
