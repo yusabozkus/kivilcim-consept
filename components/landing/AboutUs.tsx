@@ -1,137 +1,95 @@
 "use client";
-import { socialAccounts } from "@/constants";
-import React from "react";
+
 import { motion } from "framer-motion";
+import { ArrowUpRight, CircleCheck, MoveUpRight } from "lucide-react";
+import { collectiveStats } from "@/constants/brand";
 
-type Props = {};
+const principles = [
+  "Open process, shared knowledge",
+  "Small cross-disciplinary teams",
+  "Questions rooted in real needs",
+  "Fast prototypes, honest feedback",
+];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.3 },
-  },
-};
-
-const textVariants = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
-
-const statVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
-
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  show: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.7, ease: "easeOut" as const },
-  },
-};
-
-const AboutUs = (props: Props) => {
+export default function AboutUs() {
   return (
-    <section
-      className="w-full min-h-screen flex flex-row items-center justify-center py-12 sm:py-16 md:py-20 lg:py-24 px-4 lg:px-0"
-      id="about-us"
-    >
-      <div className="max-w-default w-full mx-auto flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
+    <section id="about-us" className="bg-[#f7f4ed] px-4 py-24 sm:px-6 lg:py-32">
+      <div className="mx-auto grid max-w-[1320px] gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-stretch">
         <motion.div
-          className="flex-1 order-2 lg:order-1"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.4 }}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="relative min-h-[560px] overflow-hidden rounded-[32px] bg-[#101522] p-7 text-white sm:p-10"
         >
-          <motion.h1
-            variants={textVariants}
-            className="font-bold leading-tight
-              text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl"
-          >
-            Biz Kimiz?
-          </motion.h1>
+          <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:56px_56px]" />
+          <div className="absolute -right-24 -top-24 size-80 rounded-full border-[56px] border-primary/80" />
+          <div className="relative z-10 flex h-full flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/35">
+                Collective profile / 2026
+              </p>
+              <MoveUpRight className="size-5 text-primary" />
+            </div>
 
-          <motion.p
-            variants={textVariants}
-            className="leading-relaxed font-light text-neutral-600
-              text-sm sm:text-base md:text-lg lg:text-base xl:text-lg
-              mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-14"
-          >
-            <span className="font-medium text-primary">Türk'ün Kanadı</span>,
-            ülkesine bağlı, üretken ve dayanışmacı gençleri bir araya getiren
-            bir topluluktur. Vatan sevgisini sadece bir duygu değil, somut bir
-            eylem olarak gören bizler; bilimin, teknolojinin ve kültürün
-            ışığında ülkemizin geleceğine katkı sunmayı amaçlıyoruz.
-            <span className="block mt-4 sm:mt-5">
-              Her adımımızda birlik, her projemizde umut, her başarıda ise
-              ülkemizin yarınlarına olan inancımız var.
-            </span>
-            <span className="block mt-4 sm:mt-5 font-normal">
-              Biz, gitmek yerine kalmayı; seyretmek yerine değiştirmeyi
-              seçiyoruz.
-            </span>
-          </motion.p>
+            <div className="my-16">
+              <p className="max-w-lg text-4xl font-black leading-[0.98] tracking-[-0.045em] sm:text-6xl">
+                Different disciplines. One shared table.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-2">
+                {["DESIGN", "CODE", "RESEARCH", "STORY", "IMPACT"].map((item) => (
+                  <span key={item} className="rounded-full border border-white/15 px-3 py-2 text-[10px] font-black tracking-[0.14em] text-white/55">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-          <motion.div
-            className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-10
-              mt-8 sm:mt-10 md:mt-12 lg:mt-14"
-            variants={containerVariants}
-          >
-            {socialAccounts.map((item, index) => (
-              <motion.div
-                variants={statVariants}
-                className="flex flex-row gap-4 sm:gap-5"
-                key={index}
-              >
-                <div className="bg-primary w-1.5 h-full min-h-[60px] rounded-full"></div>
-                <div className="space-y-2 sm:space-y-3 py-2">
-                  <h1
-                    className="font-normal
-                    text-2xl sm:text-3xl md:text-3xl lg:text-2xl xl:text-3xl"
-                  >
-                    {item.count}
-                  </h1>
-                  <p
-                    className="font-light text-neutral-600
-                    text-xs sm:text-sm md:text-base lg:text-sm"
-                  >
-                    {item.text}
-                  </p>
+            <div className="grid grid-cols-2 border-t border-white/10 pt-7 sm:grid-cols-4">
+              {collectiveStats.map((stat) => (
+                <div key={stat.label} className="mb-4 pr-3">
+                  <p className="text-2xl font-black">{stat.value}</p>
+                  <p className="mt-1 text-[11px] leading-4 text-white/35">{stat.label}</p>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
-          className="flex-1 order-1 lg:order-2 flex justify-center lg:justify-end"
-          variants={imageVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-col justify-center lg:pl-8"
         >
-          <div className="w-full sm:w-[90%] md:w-[85%] lg:w-[80%] h-64 sm:h-80 md:h-96 lg:h-full min-h-[300px] lg:min-h-[500px]">
-            <img
-              src="https://1.bp.blogspot.com/-DbBKHUSBX8Q/V4js7KRzqVI/AAAAAAAAl_4/mnaR-EXLOFc0D0E4Rhb2-3noXTWq7MvhQCLcB/s0/4k-ultrahd-turk-bayraklari-resimleri-18.jpg"
-              className="w-full h-full rounded-xl sm:rounded-2xl object-cover shadow-lg hover:shadow-xl transition-shadow duration-300"
-              alt="Türk Bayrağı"
-            />
+          <p className="section-kicker text-primary">Who we are</p>
+          <h2 className="mt-5 text-4xl font-black leading-[1.02] tracking-[-0.04em] text-[#101522] sm:text-6xl">
+            Not one expertise. A shared momentum.
+          </h2>
+          <p className="mt-7 text-base leading-8 text-[#101522]/60 sm:text-lg">
+            Kıvılcım is an independent creative technology collective where
+            designers, developers, researchers, and storytellers build work
+            with public value.
+          </p>
+
+          <div className="mt-9 grid gap-3 sm:grid-cols-2">
+            {principles.map((principle) => (
+              <div key={principle} className="flex items-start gap-3 text-sm font-semibold">
+                <CircleCheck className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>{principle}</span>
+              </div>
+            ))}
           </div>
+
+          <button
+            onClick={() =>
+              document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="mt-10 inline-flex w-fit items-center gap-2 font-extrabold text-[#101522] underline decoration-primary decoration-2 underline-offset-8"
+          >
+            See how to join <ArrowUpRight className="size-4" />
+          </button>
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default AboutUs;
+}

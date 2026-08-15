@@ -1,20 +1,52 @@
 import UsersClient from "./users-client";
-import { cookies } from "next/headers"; 
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 async function getData() {
-  const cookieHeader = cookies().toString(); 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
-    headers: {
-      Cookie: cookieHeader, 
-    },
-    cache: "no-store",
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch users");
+  if (!session || session.user.role !== "admin") {
+    redirect("/login");
   }
 
-  return res.json();
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      birthDate: true,
+      phoneNumber: true,
+      profession: true,
+      department: true,
+      skills: true,
+      reason: true,
+      role: true,
+      city: true,
+      createdAt: true,
+      updatedAt: true,
+      image: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return users.map((user) => ({
+    ...user,
+    image: user.image ?? "",
+    birthDate: user.birthDate ?? "",
+    phoneNumber: user.phoneNumber ?? "",
+    profession: user.profession ?? "",
+    department: user.department ?? "",
+    skills: user.skills ?? "",
+    reason: user.reason ?? "",
+    role: user.role ?? "user",
+    city: user.city ?? "",
+    createdAt: user.createdAt.toISOString(),
+    updatedAt: user.updatedAt.toISOString(),
+  }));
 }
 
 export default async function UsersPage() {

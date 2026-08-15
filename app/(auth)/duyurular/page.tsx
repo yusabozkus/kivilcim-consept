@@ -4,12 +4,14 @@ import { getAnnouncements } from "@/lib/actions/announcements.actions";
 import { Metadata } from "next";
 import { site_config } from "@/app/layout";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
-  title: `Duyurular - ${site_config.title}`,
-  description: `${site_config.title} topluluğunun güncel duyurularını, etkinliklerini ve haberlerini takip edin. Projelerimiz ve faaliyetlerimiz hakkında en son gelişmelerden haberdar olun.`,
+  title: `Studio Journal - ${site_config.title}`,
+  description: `Stories, open calls, events, and notes from the ${site_config.title} studio.`,
   openGraph: {
-    title: `Duyurular - ${site_config.title}`,
-    description: `Topluluğumuzun güncel duyuruları, etkinlikleri ve haberlerini keşfedin. ${site_config.caption}`,
+    title: `Studio Journal - ${site_config.title}`,
+    description: `Discover the latest stories, events, and open calls. ${site_config.caption}`,
     url: `${site_config.url}/announcements`,
     siteName: site_config.title,
     images: [
@@ -20,13 +22,13 @@ export const metadata: Metadata = {
         alt: site_config.title,
       },
     ],
-    locale: "tr_TR",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Duyurular - ${site_config.title}`,
-    description: `Topluluğumuzun güncel duyurularını takip edin. ${site_config.caption}`,
+    title: `Studio Journal - ${site_config.title}`,
+    description: `Follow the latest from the studio. ${site_config.caption}`,
     images: [site_config.banner],
   },
   robots: {

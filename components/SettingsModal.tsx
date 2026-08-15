@@ -63,7 +63,7 @@ export default function SettingsModal({ session }: Props) {
   const SidebarContent = () => (
     <div className="w-full md:w-[220px] bg-white/50 backdrop-blur-sm md:border-r border-white/20 p-4 flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-black">Ayarlar</h2>
+        <h2 className="text-lg font-semibold text-black">Settings</h2>
         <button
           onClick={close}
           className="p-1.5 rounded-lg hover:bg-white/80 transition-all duration-200"
@@ -88,7 +88,7 @@ export default function SettingsModal({ session }: Props) {
             }`}
             size={18}
           />
-          <span className="hidden md:inline">Profil</span>
+          <span className="hidden md:inline">Profile</span>
         </button>
         <button
           onClick={() => handleTabChange("general")}
@@ -106,7 +106,7 @@ export default function SettingsModal({ session }: Props) {
             }`}
             size={18}
           />
-          <span className="hidden md:inline">Genel</span>
+          <span className="hidden md:inline">General</span>
         </button>
       </nav>
     </div>
@@ -144,7 +144,7 @@ export default function SettingsModal({ session }: Props) {
         >
           <DialogHeader className="!p-0">
             <VisuallyHidden>
-              <DialogTitle>Ayarlar</DialogTitle>
+              <DialogTitle>Settings</DialogTitle>
             </VisuallyHidden>
           </DialogHeader>
           <SidebarContent />
@@ -159,7 +159,7 @@ export default function SettingsModal({ session }: Props) {
       <DrawerContent className="border-none h-[85vh] flex flex-col">
         <DrawerHeader className="!p-0 sr-only">
           <VisuallyHidden>
-            <DrawerTitle>Ayarlar</DrawerTitle>
+            <DrawerTitle>Settings</DrawerTitle>
           </VisuallyHidden>
         </DrawerHeader>
         <div className="flex flex-col flex-1 bg-white/70 backdrop-blur-md rounded-t-2xl overflow-hidden">

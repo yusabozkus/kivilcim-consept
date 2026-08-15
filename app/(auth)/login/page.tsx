@@ -7,11 +7,11 @@ import LoginClient from "./login-client";
 import { site_config } from "@/app/layout";
 
 export const metadata: Metadata = {
-  title: `Giriş Yap - ${site_config.title}`,
-  description: `Topluluğumuza katılmak ve projelerimizde yer almak için giriş yapın. Atatürk'ün izinde, Türkiye'nin geleceği için birlikte çalışalım.`,
+  title: `Studio Login - ${site_config.title}`,
+  description: `Sign in to manage Kıvılcım projects, stories, and applications.`,
   openGraph: {
-    title: `Giriş Yap - ${site_config.title}`,
-    description: `Topluluğumuza katılmak ve projelerimizde yer almak için giriş yapın. ${site_config.caption}`,
+    title: `Studio Login - ${site_config.title}`,
+    description: `Kıvılcım management workspace. ${site_config.caption}`,
     url: `${site_config.url}/login`,
     siteName: site_config.title,
     images: [
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
         alt: site_config.title,
       },
     ],
-    locale: "tr_TR",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Giriş Yap - ${site_config.title}`,
-    description: `Topluluğumuza katılın. ${site_config.caption}`,
+    title: `Studio Login - ${site_config.title}`,
+    description: `Kıvılcım management workspace. ${site_config.caption}`,
     images: [site_config.banner],
   },
   robots: {

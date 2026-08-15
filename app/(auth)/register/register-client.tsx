@@ -26,6 +26,7 @@ import {
   ChevronDownIcon,
   ChevronsUpDown,
   Handshake,
+  Lock,
   Mail,
   Phone,
   School,
@@ -66,7 +67,7 @@ const steps = [
   {
     id: 2,
     icon: Phone,
-    fields: ["phone", "email"],
+    fields: ["phoneNumber", "email", "password", "confirmPassword"],
   },
   {
     id: 3,
@@ -97,6 +98,8 @@ export default function RegisterClient() {
       profession: "",
       department: "",
       email: "",
+      password: "",
+      confirmPassword: "",
       skills: "",
       city: "",
       reason: "",
@@ -118,13 +121,11 @@ export default function RegisterClient() {
         skills: user.skills,
         reason: user.reason,
         city: user.city,
-        role: "user" as const,
       };
 
       const result = await signUp(
         user.email,
-        // generatePassword(),
-        "123123123",
+        user.password,
         user.name,
         avatarUrl,
         extra
@@ -136,13 +137,13 @@ export default function RegisterClient() {
 
       if ("user" in result) {
         setIsSuccess(true);
-        toast.success("Kayıt başarılı! Yönlendiriliyorsunuz...");
+        toast.success("Your application has been submitted.");
         // window.location.href = "/dashboard";
       } else {
-        toast.error("Kayıt sırasında bir hata oluştu.");
+        toast.error("Something went wrong while submitting your application.");
       }
     } catch (error: any) {
-      toast.error(error.message || "Kayıt sırasında bir hata oluştu");
+      toast.error(error.message || "Unable to submit your application");
       console.error("Register error:", error);
     } finally {
       setIsLoading(false);
@@ -219,7 +220,7 @@ export default function RegisterClient() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-4xl font-extrabold text-primary"
             >
-              Türk'ün Kanadı'na Hoş Geldiniz
+              Welcome to Kıvılcım
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -227,8 +228,8 @@ export default function RegisterClient() {
               transition={{ delay: 0.4, duration: 0.5 }}
               className="text-gray-600"
             >
-              Birlik ve dayanışmanın adresindesiniz. Topluluğumuza katılmak için
-              birkaç basit adımı tamamlamanız yeterli.
+              A place to meet curious people and build useful things together.
+              Complete a few short steps to introduce yourself.
             </motion.p>
           </motion.div>
         );
@@ -255,7 +256,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Adınız ve Soyadınız
+                        Full name
                       </Label>
 
                       <motion.div
@@ -268,7 +269,7 @@ export default function RegisterClient() {
                         <Input
                           {...field}
                           type="text"
-                          placeholder="Mustafa Kemal Atatürk"
+                          placeholder="Alex Morgan"
                           className="border-zinc-400 bg-white py-6 pl-12 !text-base font-bold placeholder:font-medium text-black transition-all focus:shadow-lg"
                         />
                       </motion.div>
@@ -289,7 +290,7 @@ export default function RegisterClient() {
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
                     <Label className="font-semibold text-base">
-                      Doğum Tarihi
+                      Birth year
                     </Label>
                   </motion.div>
                   <motion.div
@@ -307,7 +308,7 @@ export default function RegisterClient() {
                         >
                           {field.value
                             ? new Date(field.value).toLocaleDateString()
-                            : "Tarih seçiniz"}
+                            : "Select a year"}
                           <motion.div
                             animate={{ rotate: open ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
@@ -377,7 +378,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Telefon Numaranız
+                        Phone number
                       </Label>
 
                       <motion.div
@@ -438,7 +439,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Email Adresiniz
+                        Email address
                       </Label>
 
                       <motion.div
@@ -461,6 +462,50 @@ export default function RegisterClient() {
                 </FormItem>
               )}
             />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="text-base font-semibold">Password</Label>
+                    <FormControl>
+                      <div className="relative mt-3">
+                        <Lock className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="At least 8 characters"
+                          className="border-zinc-400 bg-white py-6 pl-12 !text-base font-bold text-black"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="text-base font-semibold">Confirm password</Label>
+                    <FormControl>
+                      <div className="relative mt-3">
+                        <Lock className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="Enter your password again"
+                          className="border-zinc-400 bg-white py-6 pl-12 !text-base font-bold text-black"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </motion.div>
         );
       case 3:
@@ -485,7 +530,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Mesleğiniz
+                        Profession
                       </Label>
 
                       <motion.div
@@ -498,7 +543,7 @@ export default function RegisterClient() {
                         <Input
                           {...field}
                           type="text"
-                          placeholder="Yazılım Mühendisi"
+                          placeholder="Software engineer"
                           className="border-zinc-400 bg-white py-6 pl-12 !text-base font-bold placeholder:font-medium text-black transition-all focus:shadow-lg"
                         />
                       </motion.div>
@@ -521,7 +566,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Okuduğunuz Bölüm
+                        Field of study
                       </Label>
 
                       <motion.div
@@ -534,7 +579,7 @@ export default function RegisterClient() {
                         <Input
                           {...field}
                           type="text"
-                          placeholder="Bilgisayar Mühendisliği"
+                          placeholder="Computer science"
                           className="border-zinc-400 bg-white py-6 pl-12 !text-base font-bold placeholder:font-medium text-black transition-all focus:shadow-lg"
                         />
                       </motion.div>
@@ -569,7 +614,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Yetenekleriniz ya da Hobileriniz
+                        Skills and interests
                       </Label>
 
                       <motion.div
@@ -580,7 +625,7 @@ export default function RegisterClient() {
                       >
                         <Textarea
                           {...field}
-                          placeholder="Yazılım geliştirme, grafik tasarım, fotoğrafçılık..."
+                          placeholder="Software, visual design, photography..."
                           className="border-zinc-400 bg-white h-[100px] !text-base font-bold placeholder:font-medium text-black transition-all focus:shadow-lg"
                         />
                       </motion.div>
@@ -603,7 +648,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Topluluğumuza ne için katılmak istiyorsunuz?
+                        What would you like to build or learn with us?
                       </Label>
 
                       <motion.div
@@ -614,7 +659,7 @@ export default function RegisterClient() {
                       >
                         <Textarea
                           {...field}
-                          placeholder="Topluluk etkinliklerine katılmak, yeni arkadaşlıklar kurmak, projelerde yer almak..."
+                          placeholder="Tell us about your interests, ideas, and what you hope to contribute..."
                           className="border-zinc-400 bg-white h-[100px] !text-base font-bold placeholder:font-medium text-black transition-all focus:shadow-lg"
                         />
                       </motion.div>
@@ -637,7 +682,7 @@ export default function RegisterClient() {
                       className="space-y-3"
                     >
                       <Label className="font-semibold text-base">
-                        Yaşadığınız Şehir
+                        City
                       </Label>
                       <motion.div
                         initial={{ x: -50, opacity: 0 }}
@@ -652,18 +697,18 @@ export default function RegisterClient() {
                               aria-expanded={open}
                               className="border-zinc-400 bg-white py-6 !text-base font-bold placeholder:font-medium text-black w-full justify-between text-left transition-all hover:shadow-lg"
                             >
-                              {field.value ? field.value : "Bir şehir seçiniz"}
+                              {field.value ? field.value : "Select a city"}
                               <ChevronsUpDown className="opacity-50" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-[300px] p-0">
                             <Command>
                               <CommandInput
-                                placeholder="Şehir ara..."
+                                placeholder="Search cities..."
                                 className="h-9"
                               />
                               <CommandList>
-                                <CommandEmpty>Şehir bulunamadı.</CommandEmpty>
+                                <CommandEmpty>No city found.</CommandEmpty>
                                 <CommandGroup>
                                   {Object.entries(provinces).map(
                                     ([key, name]) => (
@@ -751,8 +796,7 @@ export default function RegisterClient() {
 
   if (isSuccess) {
     return (
-      <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-100 via-white to-blue-100 overflow-hidden text-center px-6">
-        {/* Arka plan efekti */}
+      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-orange-100 via-[#f7f4ed] to-violet-100 px-6 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#ffffff40,_transparent_60%),radial-gradient(circle_at_bottom_right,_#e0e7ff60,_transparent_60%)] blur-3xl" />
 
         <div className="relative z-10 max-w-3xl">
@@ -761,42 +805,37 @@ export default function RegisterClient() {
               <CheckCircle className="w-14 h-14 text-green-600" />
             </div>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
-              Türk’ün Kanadı’na Hoş Geldiniz
+              Application received
             </h1>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-              Topluluğumuza katıldığınız için teşekkür ederiz. Hep birlikte,
-              Gazi Mustafa Kemal Atatürk’ün yolunda; bilimin, birliğin ve
-              özgürlüğün ışığında <strong>güçlü bir Türkiye</strong> inşa
-              ediyoruz.
+              Thanks for your interest in Kıvılcım. Our team will review your
+              application and reach out when we find a strong project match.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-6 mt-12 text-gray-700">
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-red-700">
-                Birlik ve Dayanışma
+                Build together
               </h3>
               <p className="text-sm leading-relaxed">
-                Dünyanın dört bir yanındaki Türkleri ortak bir değer etrafında
-                birleştiriyoruz.
+                We bring different disciplines together around a shared problem.
               </p>
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-blue-700">
-                Atatürk Yolunda
+                Learn in the open
               </h3>
               <p className="text-sm leading-relaxed">
-                Cumhuriyetimizin kurucusunun ilkeleriyle çağdaş uygarlığa
-                kararlılıkla ilerliyoruz.
+                We grow by sharing the process, the lessons, and the wrong turns.
               </p>
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-green-700">
-                Geleceğe Umut
+                Make real impact
               </h3>
               <p className="text-sm leading-relaxed">
-                Gençliğin potansiyelini destekleyerek aydınlık bir geleceğe
-                yatırım yapıyoruz.
+                We test ideas early and grow the work that proves useful.
               </p>
             </div>
           </div>
@@ -806,18 +845,18 @@ export default function RegisterClient() {
               onClick={() => router.push("/")}
               className="bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
-              Ana Sayfaya Dön
+              Back to home
             </button>
           </div>
 
           <div className="mt-10 text-sm text-gray-500">
             <p>
-              Bizimle iletişime geçmek için{" "}
+              Questions? Email us at{" "}
               <a
-                href="mailto:destek@turkun-kanadi.org"
+                href="mailto:hello@kivilcim.community"
                 className="text-blue-600 hover:underline"
               >
-                destek@turkun-kanadi.org
+                hello@kivilcim.community
               </a>
             </p>
           </div>
@@ -827,7 +866,7 @@ export default function RegisterClient() {
   }
 
   return (
-    <div className="w-full relative h-full flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full relative h-screen flex flex-col justify-center items-center overflow-hidden">
       <div
         className="absolute top-10 sm:top-20 left-0 right-0 mx-auto 
                 flex flex-col w-full max-w-[470px] "
@@ -892,7 +931,7 @@ export default function RegisterClient() {
           className="flex flex-row items-center justify-center gap-4 mt-10"
         >
           <Logo className="!size-5" />
-          <h1 className="text-xl font-extrabold">Türk'ün Kanadı</h1>
+          <h1 className="text-xl font-black tracking-[0.16em]">KIVILCIM</h1>
         </motion.div>
       </div>
 
@@ -949,7 +988,7 @@ export default function RegisterClient() {
                   onClick={handleBack}
                 >
                   {isLoading && <Spinner />}
-                  Geri
+                  Back
                 </Button>
               </motion.div>
             </motion.div>
@@ -987,10 +1026,10 @@ export default function RegisterClient() {
               transition={{ duration: 0.2 }}
             >
               {currentStep === 0
-                ? "Başla"
+                ? "Start"
                 : currentStep === steps.length - 1
-                ? "Kayıt Ol"
-                : "İleri"}
+                ? "Submit application"
+                : "Continue"}
             </motion.span>
           </Button>
         </motion.div>

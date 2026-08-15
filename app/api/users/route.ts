@@ -1,11 +1,8 @@
 import { auth } from "@/lib/auth";
-import { PrismaClient } from "@/lib/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
 export async function GET(req: Request) {
-  // ✅ Better Auth’ta session’ı almak için:
   const session = await auth.api.getSession({ headers: req.headers });
 
   if (!session || !session.user) {

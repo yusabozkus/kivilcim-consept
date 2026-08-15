@@ -1,11 +1,10 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { Prisma, PrismaClient } from "../generated/prisma";
-
-const prisma = new PrismaClient();
+import { Prisma } from "../generated/prisma";
 
 export type Work = Prisma.WorkGetPayload<{
   include: {
@@ -60,8 +59,8 @@ export async function getWorks(
       },
     };
   } catch (error) {
-    console.error("Projeler alınırken hata:", error);
-    throw new Error("Projeler alınamadı");
+    console.error("Unable to fetch projects:", error);
+    throw new Error("Unable to fetch projects");
   }
 }
 
@@ -79,8 +78,8 @@ export async function getWork(id: string): Promise<Work | null> {
 
     return work;
   } catch (error) {
-    console.error("Proje getirme hatası:", error);
-    throw new Error("Proje bulunamadı");
+    console.error("Unable to fetch project:", error);
+    throw new Error("Project not found");
   }
 }
 
@@ -96,19 +95,19 @@ export async function createWork(data: {
     });
 
     if (!session) {
-      throw new Error("Oturum açmanız gerekiyor");
+      throw new Error("You need to sign in");
     }
 
     if (session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     if (!data.title || !data.title.trim()) {
-      throw new Error("Başlık gereklidir");
+      throw new Error("Title is required");
     }
 
     if (!data.content || data.content.length === 0) {
-      throw new Error("İçerik gereklidir");
+      throw new Error("Content is required");
     }
 
     const work = await prisma.work.create({
@@ -128,8 +127,8 @@ export async function createWork(data: {
     revalidatePath("/works");
     return { success: true, work };
   } catch (error: any) {
-    console.error("Proje oluşturma hatası:", error);
-    throw new Error(error.message || "Proje oluşturulamadı");
+    console.error("Unable to create project:", error);
+    throw new Error(error.message || "Unable to create project");
   }
 }
 
@@ -148,7 +147,7 @@ export async function updateWork(
     });
 
     if (!session || session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     const work = await prisma.work.update({
@@ -169,8 +168,8 @@ export async function updateWork(
     revalidatePath(`/works/${id}`);
     return { success: true, work };
   } catch (error: any) {
-    console.error("Proje güncelleme hatası:", error);
-    throw new Error(error.message || "Proje güncellenemedi");
+    console.error("Unable to update project:", error);
+    throw new Error(error.message || "Unable to update project");
   }
 }
 
@@ -182,7 +181,7 @@ export async function deleteWork(id: string) {
     });
 
     if (!session || session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     await prisma.work.delete({
@@ -190,9 +189,9 @@ export async function deleteWork(id: string) {
     });
 
     revalidatePath("/works");
-    return { success: true, message: "Proje silindi" };
+    return { success: true, message: "Project deleted" };
   } catch (error: any) {
-    console.error("Proje silme hatası:", error);
-    throw new Error(error.message || "Proje silinemedi");
+    console.error("Unable to delete project:", error);
+    throw new Error(error.message || "Unable to delete project");
   }
 }

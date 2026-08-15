@@ -26,7 +26,7 @@ import {
   Work,
 } from "@/lib/actions/work.actions";
 import { formatDistanceToNowStrict } from "date-fns";
-import { tr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -73,12 +73,12 @@ export default function PageClient({ session, works }: ClientProps) {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        alert("Lütfen bir resim dosyası seçin");
+        alert("Please select an image file");
         return;
       }
 
       if (file.size > 5 * 1024 * 1024) {
-        alert("Resim boyutu çok büyük. Maksimum 5MB olmalı.");
+        alert("Image is too large. Maximum size is 5MB.");
         return;
       }
 
@@ -109,7 +109,7 @@ export default function PageClient({ session, works }: ClientProps) {
 
   const handleSaveProject = async () => {
     if (!form.title.trim() || !form.description.trim() || !coverImage) {
-      toast.error("Lütfen tüm alanları doldurun!");
+      toast.error("Please complete every field!");
       return;
     }
 
@@ -123,7 +123,7 @@ export default function PageClient({ session, works }: ClientProps) {
         });
 
         if (result.success) {
-          toast.success("Proje başarıyla güncellendi!");
+          toast.success("Project updated successfully!");
           handleCloseSheet();
         }
       } else {
@@ -134,12 +134,12 @@ export default function PageClient({ session, works }: ClientProps) {
         });
 
         if (result.success) {
-          toast.success("Proje başarıyla eklendi!");
+          toast.success("Project added successfully!");
           handleCloseSheet();
         }
       }
     } catch (error: any) {
-      toast.error(error.message || "Bir hata oluştu");
+      toast.error(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -147,7 +147,7 @@ export default function PageClient({ session, works }: ClientProps) {
 
   const handleDelete = async (id: string) => {
     if (!id) {
-      toast.error("Proje silinemedi!");
+      toast.error("Unable to delete project!");
       return;
     }
 
@@ -160,7 +160,7 @@ export default function PageClient({ session, works }: ClientProps) {
       <div className="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Projeler
+            Projects
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             {works.pagination.total} proje bulundu
@@ -170,19 +170,19 @@ export default function PageClient({ session, works }: ClientProps) {
           <SheetTrigger asChild>
             <Button className="gap-2" onClick={() => setEditingWork(null)}>
               <Plus size={18} />
-              Yeni Proje
+              New project
             </Button>
           </SheetTrigger>
           <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
             <SheetHeader className="pb-6 border-b">
               <SheetTitle className="text-lg font-bold">
-                {editingWork ? "Projeyi Düzenle" : "Yeni Proje Ekle"}
+                {editingWork ? "Edit project" : "Add a new project"}
               </SheetTitle>
             </SheetHeader>
 
             <div className="space-y-6 px-2 sm:px-4 py-4">
               <div className="space-y-3">
-                <Label className="text-sm font-semibold">Kapak Görseli</Label>
+                <Label className="text-sm font-semibold">Cover image</Label>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -208,7 +208,7 @@ export default function PageClient({ session, works }: ClientProps) {
                             size={32}
                           />
                           <p className="text-white font-medium text-sm">
-                            Görseli değiştir
+                            Change image
                           </p>
                         </div>
                       </div>
@@ -219,7 +219,7 @@ export default function PageClient({ session, works }: ClientProps) {
                         <Image size={28} className="text-gray-400" />
                       </div>
                       <p className="text-gray-600 font-medium text-sm">
-                        Görsel yüklemek için tıklayın
+                        Click to upload an image
                       </p>
                       <p className="text-gray-400 text-xs mt-1">
                         PNG, JPG (max. 5MB)
@@ -231,7 +231,7 @@ export default function PageClient({ session, works }: ClientProps) {
 
               <div className="space-y-3">
                 <Label htmlFor="title" className="text-sm font-semibold">
-                  Proje Başlığı
+                  Project title
                 </Label>
                 <Input
                   value={form.title}
@@ -239,14 +239,14 @@ export default function PageClient({ session, works }: ClientProps) {
                   id="title"
                   name="title"
                   className="h-12 text-base"
-                  placeholder="Örn: Web Sitesi Yenileme Projesi"
+                  placeholder="e.g. Neighborhood Data Commons"
                   disabled={isLoading}
                 />
               </div>
 
               <div className="space-y-3">
                 <Label htmlFor="description" className="text-sm font-semibold">
-                  Açıklama
+                  Description
                 </Label>
                 <Textarea
                   value={form.description}
@@ -256,7 +256,7 @@ export default function PageClient({ session, works }: ClientProps) {
                   id="description"
                   name="description"
                   className="min-h-[120px] max-h-[250px] text-sm resize-none"
-                  placeholder="Proje hakkında detaylı bilgi ekleyin..."
+                  placeholder="Add the project story, goals, and outcomes..."
                   disabled={isLoading}
                 />
               </div>
@@ -269,7 +269,7 @@ export default function PageClient({ session, works }: ClientProps) {
                   className="flex-1 w-full"
                   onClick={handleCloseSheet}
                 >
-                  İptal
+                  Cancel
                 </Button>
               </SheetClose>
               <Button
@@ -280,11 +280,11 @@ export default function PageClient({ session, works }: ClientProps) {
                 {isLoading && <Spinner />}
                 {isLoading
                   ? editingWork
-                    ? "Güncelleniyor..."
+                    ? "Updating..."
                     : "Kaydediliyor..."
                   : editingWork
-                  ? "Güncelle"
-                  : "Kaydet"}
+                  ? "Update"
+                  : "Save"}
               </Button>
             </SheetFooter>
           </SheetContent>
@@ -298,10 +298,10 @@ export default function PageClient({ session, works }: ClientProps) {
               <Image size={36} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              Henüz proje yok
+              No projects yet
             </h3>
             <p className="text-sm text-gray-500">
-              İlk projenizi ekleyerek başlayın
+              Start by adding your first project
             </p>
           </div>
         ) : (
@@ -344,7 +344,7 @@ export default function PageClient({ session, works }: ClientProps) {
                       <span>
                         {formatDistanceToNowStrict(new Date(item.createdAt), {
                           addSuffix: true,
-                          locale: tr,
+                          locale: enUS,
                         })}
                       </span>
                     </div>
@@ -359,7 +359,7 @@ export default function PageClient({ session, works }: ClientProps) {
                     onClick={() => handleOpenEditSheet(item)}
                   >
                     <Edit3 size={16} />
-                    <span className="hidden sm:inline">Düzenle</span>
+                    <span className="hidden sm:inline">Edit</span>
                   </Button>
 
                   <AlertDialog>
@@ -370,31 +370,30 @@ export default function PageClient({ session, works }: ClientProps) {
                         className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 flex-1 sm:flex-none"
                       >
                         <Trash2 size={16} />
-                        <span className="hidden sm:inline">Sil</span>
+                        <span className="hidden sm:inline">Delete</span>
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="w-[90vw] max-w-md">
                       <AlertDialogHeader>
                         <AlertDialogTitle className="text-base sm:text-lg">
-                          Projeyi silmek istediğinizden emin misiniz?
+                          Delete this project?
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-sm">
                           <strong className="text-gray-900">
                             {item.title}
                           </strong>{" "}
-                          başlıklı proje kalıcı olarak silinecektir. Bu işlem
-                          geri alınamaz.
+                          will be permanently deleted. This action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="flex-col sm:flex-row gap-2">
                         <AlertDialogCancel className="w-full sm:w-auto">
-                          Vazgeç
+                          Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleDelete(item.id)}
                           className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                         >
-                          Sil
+                          Delete
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

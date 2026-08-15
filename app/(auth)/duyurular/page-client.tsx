@@ -7,7 +7,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Announcement } from "@/lib/actions/announcements.actions";
 import { formatDistanceToNowStrict } from "date-fns";
-import { tr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { ArrowRight } from "lucide-react";
 
 const headerVariants = {
@@ -79,7 +79,7 @@ export default function PageClient({ announcements }: ClientProps) {
             >
               <Logo />
               <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
-                Türk'ün Kanadı
+                KIVILCIM
               </h1>
             </motion.div>
           </Link>
@@ -94,7 +94,7 @@ export default function PageClient({ announcements }: ClientProps) {
               variant="outline"
               className="rounded-full px-6 py-5 border-2 border-primary hover:bg-primary text-primary hover:text-white transition-all duration-300"
             >
-              <Link href="/">Ana Sayfa</Link>
+              <Link href="/">Home</Link>
             </Button>
           </motion.div>
         </nav>
@@ -108,10 +108,10 @@ export default function PageClient({ announcements }: ClientProps) {
           className="mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-600 bg-clip-text text-transparent mb-4">
-            Güncel Duyurular
+            Studio Journal
           </h1>
           <p className="text-neutral-600 text-lg">
-            En son haberler ve güncellemeler
+            Stories, field notes, and updates from the collective
           </p>
         </motion.div>
 
@@ -130,7 +130,7 @@ export default function PageClient({ announcements }: ClientProps) {
                 variants={itemVariants}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
-                <Link href={`/duyurular/${item.id}`}>
+                <Link href={`/journal/${item.id}`}>
                   <div className="group h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-neutral-200/50 hover:border-neutral-300">
                     <div className="relative h-56 overflow-hidden">
                       <motion.img
@@ -146,7 +146,7 @@ export default function PageClient({ announcements }: ClientProps) {
                         <span className="inline-block px-4 py-2 bg-white/95 backdrop-blur-sm text-neutral-900 rounded-full text-sm font-medium shadow-lg">
                           {formatDistanceToNowStrict(new Date(item.createdAt), {
                             addSuffix: true,
-                            locale: tr,
+                            locale: enUS,
                           })}
                         </span>
                       </div>
@@ -173,7 +173,7 @@ export default function PageClient({ announcements }: ClientProps) {
                             <p className="text-sm font-semibold text-neutral-900">
                               {item.user.name}
                             </p>
-                            <p className="text-xs text-neutral-500">Yazar</p>
+                            <p className="text-xs text-neutral-500">Author</p>
                           </div>
                         </div>
 
@@ -182,7 +182,7 @@ export default function PageClient({ announcements }: ClientProps) {
                           whileHover={{ x: 5 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <span className="text-sm">Devamı</span>
+                          <span className="text-sm">Read story</span>
                           <ArrowRight className="w-5 h-5" />
                         </motion.div>
                       </div>
@@ -201,7 +201,7 @@ export default function PageClient({ announcements }: ClientProps) {
             className="text-center py-20"
           >
             <p className="text-neutral-500 text-lg">
-              Henüz duyuru bulunmamaktadır.
+              No stories have been published yet.
             </p>
           </motion.div>
         )}

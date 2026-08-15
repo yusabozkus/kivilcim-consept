@@ -4,9 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --container-default: 1600px;
-  --color-body: #fff;
-  --color-secondary: #000;
+  --container-default: 1320px;
+  --color-body: #f7f4ed;
+  --color-secondary: #101522;
 }
 
 @theme inline {
@@ -58,14 +58,14 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.435 0.201 24.6);
+  --primary: oklch(0.69 0.205 39);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.95 0.018 82);
+  --secondary-foreground: oklch(0.22 0.035 260);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.63 0.18 292);
+  --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
@@ -79,7 +79,7 @@
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.435 0.201 24.6);
+  --sidebar-accent: oklch(0.69 0.205 39);
   --sidebar-accent-foreground: oklch(100% 0.00011 271.152);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -126,6 +126,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: #f7f4ed;
   }
   button,
   [role="button"] {
@@ -142,11 +143,17 @@ html.lenis {
   color: white;
 }
 
+.section-kicker {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
 .swiper-pagination-bullet-active {
   background-color: var(--primary) !important;
 }
 
-/* global.css veya tailwind.css */
 .scrollbar-none::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
@@ -200,4 +207,8 @@ body
 
 @utility no-scrollbar {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
+body > div.group\/sidebar-wrapper.has-data-\[variant\=inset\]\:bg-sidebar.flex.min-h-svh.w-full > main > div > div > div.bn-container.light.bn-shadcn.p-0.-mx-13.min-h-\[500px\] > div{
+  background-color: #ffffff20 !important;
 }

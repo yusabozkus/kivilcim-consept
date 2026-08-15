@@ -1,11 +1,10 @@
 "use server";
 
-import { Prisma, PrismaClient } from "@/lib/generated/prisma";
+import { Prisma } from "@/lib/generated/prisma";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-
-const prisma = new PrismaClient();
 
 export type Announcement = Prisma.AnnouncementGetPayload<{
   include: {
@@ -66,8 +65,8 @@ export async function getAnnouncements(
       },
     };
   } catch (error) {
-    console.error("Duyurular alınırken hata:", error);
-    throw new Error("Duyurular alınamadı");
+    console.error("Unable to fetch stories:", error);
+    throw new Error("Unable to fetch stories");
   }
 }
 
@@ -90,8 +89,8 @@ export async function getAnnouncement(
 
     return announcement;
   } catch (error) {
-    console.error("Duyuru getirme hatası:", error);
-    throw new Error("Duyuru bulunamadı");
+    console.error("Unable to fetch story:", error);
+    throw new Error("Story not found");
   }
 }
 
@@ -106,19 +105,19 @@ export async function createAnnouncement(data: {
     });
 
     if (!session) {
-      throw new Error("Oturum açmanız gerekiyor");
+      throw new Error("You need to sign in");
     }
 
     if (session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     if (!data.title || !data.title.trim()) {
-      throw new Error("Başlık gereklidir");
+      throw new Error("Title is required");
     }
 
     if (!data.content || data.content.length === 0) {
-      throw new Error("İçerik gereklidir");
+      throw new Error("Content is required");
     }
 
     const announcement = await prisma.announcement.create({
@@ -143,8 +142,8 @@ export async function createAnnouncement(data: {
     revalidatePath("/announcements");
     return { success: true, announcement };
   } catch (error: any) {
-    console.error("Duyuru oluşturma hatası:", error);
-    throw new Error(error.message || "Duyuru oluşturulamadı");
+    console.error("Unable to create story:", error);
+    throw new Error(error.message || "Unable to create story");
   }
 }
 
@@ -162,11 +161,11 @@ export async function updateAnnouncement(
     });
 
     if (!session || session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     if (!data.title || !data.title.trim()) {
-      throw new Error("Başlık gereklidir");
+      throw new Error("Title is required");
     }
 
     const announcement = await prisma.announcement.update({
@@ -191,8 +190,8 @@ export async function updateAnnouncement(
     revalidatePath(`/announcements/${id}`);
     return { success: true, announcement };
   } catch (error: any) {
-    console.error("Duyuru güncelleme hatası:", error);
-    throw new Error(error.message || "Duyuru güncellenemedi");
+    console.error("Unable to update story:", error);
+    throw new Error(error.message || "Unable to update story");
   }
 }
 
@@ -203,7 +202,7 @@ export async function deleteAnnouncement(id: string) {
     });
 
     if (!session || session.user.role !== "admin") {
-      throw new Error("Bu işlem için yetkiniz yok");
+      throw new Error("You do not have permission for this action");
     }
 
     await prisma.announcement.delete({
@@ -211,9 +210,9 @@ export async function deleteAnnouncement(id: string) {
     });
 
     revalidatePath("/announcements");
-    return { success: true, message: "Duyuru silindi" };
+    return { success: true, message: "Story deleted" };
   } catch (error: any) {
-    console.error("Duyuru silme hatası:", error);
-    throw new Error(error.message || "Duyuru silinemedi");
+    console.error("Unable to delete story:", error);
+    throw new Error(error.message || "Unable to delete story");
   }
 }

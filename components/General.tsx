@@ -28,7 +28,7 @@ export default function General({ session }: Props) {
 
   const handleSignOutAllAccount = async () => {
     if (!session?.user?.id) {
-      toast.error("Kullanıcı bilgisi bulunamadı");
+      toast.error("User information not found");
       return;
     }
 
@@ -42,7 +42,7 @@ export default function General({ session }: Props) {
         toast.error(result.error);
       }
     } catch (error: any) {
-      toast.error("Bir hata oluştu");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +50,7 @@ export default function General({ session }: Props) {
 
   const handleDeleteAccount = async () => {
     // if (!session?.user?.id) {
-    //   toast.error("Kullanıcı bilgisi bulunamadı");
+    //   toast.error("User information could not be found");
     //   return;
     // }
     // if (
@@ -80,15 +80,15 @@ export default function General({ session }: Props) {
       <div className="p-6 space-y-6">
         <div>
           <h3 className="text-2xl font-semibold text-black mb-2">
-            Genel Ayarlar
+            General settings
           </h3>
           <p className="text-sm text-black/50">
-            Uygulama için genel tercihleri düzenleyin
+            Manage general preferences for your account
           </p>
         </div>
 
         <div className="flex flex-row items-center justify-between mt-10">
-          <h1 className="text-base font-medium">Tüm cihazlardan çıkış yap</h1>
+          <h1 className="text-base font-medium">Sign out from all devices</h1>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
@@ -96,45 +96,43 @@ export default function General({ session }: Props) {
                 className="bg-transparent text-primary hover:bg-primary/20"
                 disabled={isLoading}
               >
-                {isLoading ? "İşleniyor..." : "Çıkış Yap"}
+                {isLoading ? "Working..." : "Sign out"}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="w-[90vw] max-w-md">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-base sm:text-lg font-semibold">
-                  Tüm Cihazlardan Çıkış Yapmak Üzeresiniz
+                  Sign out from every device?
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-sm text-muted-foreground">
-                  Bu işlem, şu anda oturum açtığınız
-                  <strong> tüm cihazlardaki</strong> hesap oturumlarınızı
-                  sonlandırır. Sadece bu cihazda değil, telefon, tablet ve diğer
-                  bilgisayarlarda da çıkış yapılacaktır. Devam etmek
-                  istediğinize emin misiniz?
+                  This will end your account sessions on
+                  <strong> every device</strong>, including phones, tablets,
+                  and other computers. Are you sure you want to continue?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter className="flex-col sm:flex-row gap-2">
                 <AlertDialogCancel className="w-full sm:w-auto">
-                  Vazgeç
+                  Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleSignOutAllAccount}
                   className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                 >
-                  Evet, Çıkış Yap
+                  Yes, sign out
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <h1 className="text-base font-medium">Hesabını Sil</h1>
+          <h1 className="text-base font-medium">Delete account</h1>
           <Button
             size={"sm"}
             className="bg-transparent text-primary hover:bg-primary/20"
             onClick={handleDeleteAccount}
             disabled={isLoading}
           >
-            {isLoading ? "İşleniyor..." : "Hesabı Sil"}
+            {isLoading ? "Working..." : "Delete account"}
           </Button>
         </div>
       </div>

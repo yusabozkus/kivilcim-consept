@@ -1,18 +1,19 @@
 "use client";
-import React, { useState } from "react";
+
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowUpRight, CalendarDays, X } from "lucide-react";
+import { format } from "date-fns";
+import { enUS } from "date-fns/locale";
 import { Work } from "@/lib/actions/work.actions";
+import { demoProjects } from "@/constants/brand";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
-import { Button } from "../ui/button";
-import { format } from "date-fns";
-import { tr } from "date-fns/locale";
-import { Calendar, RefreshCcw } from "lucide-react";
+} from "@/components/ui/sheet";
 
 type Props = {
   works: {
@@ -26,204 +27,164 @@ type Props = {
   };
 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.3 },
-  },
+type DisplayWork = {
+  id: string;
+  title: string;
+  content: string;
+  tag: string;
+  accent: string;
+  coverImage?: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 };
 
-const headingVariants = {
-  hidden: { opacity: 0, y: -40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
+const projectAccents = [
+  "from-[#ff6b35] via-[#ff8c5a] to-[#ffc46b]",
+  "from-[#6c5ce7] via-[#8678ef] to-[#b8afff]",
+  "from-[#10253f] via-[#164e63] to-[#22d3a7]",
+];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
+export default function OurWorks({ works }: Props) {
+  const [selectedWork, setSelectedWork] = useState<DisplayWork | null>(null);
 
-const OurWorks = ({ works }: Props) => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [selectedWork, setSelectedWork] = useState<Work | null>(null);
+  const displayWorks = useMemo<DisplayWork[]>(() => {
+    if (!works.data.length) return demoProjects;
 
-  const handleShowAlert = (work: Work) => {
-    setSelectedWork(work);
-    setShowAlert(true);
-  };
-
-  const handleCloseAlert = () => {
-    setShowAlert(false);
-    setSelectedWork(null);
-  };
+    return works.data.map((work, index) => ({
+      id: work.id,
+      title: work.title,
+      content: work.content,
+      coverImage: work.coverImage,
+      createdAt: work.createdAt,
+      updatedAt: work.updatedAt,
+      tag: "Collective project",
+      accent: projectAccents[index % projectAccents.length],
+    }));
+  }, [works.data]);
 
   return (
-    <section
-      className="w-full lg:h-full flex flex-row items-center justify-center px-4 lg:px-0"
-      id="our-works"
-    >
-      <Sheet open={showAlert} onOpenChange={handleCloseAlert}>
-        <SheetContent
-          className="!w-[96%] lg:!max-w-[550px] overflow-y-auto no-scrollbar border-none backdrop-blur-lg bg-[#ffffffdc] h-[98%] rounded-xl right-0 top-0 bottom-0 m-2"
-          onWheel={(e) => e.stopPropagation()}
-          onTouchMove={(e) => e.stopPropagation()}
-        >
-          <SheetHeader>
-            <SheetTitle className="text-2xl font-bold">Proje Detayı</SheetTitle>
-            <SheetDescription>
-              {selectedWork &&
-                format(new Date(selectedWork.createdAt), "d MMMM yyyy", {
-                  locale: tr,
-                })}
-            </SheetDescription>
-          </SheetHeader>
-
+    <section id="our-works" className="bg-white px-4 py-24 sm:px-6 lg:py-32">
+      <Sheet open={Boolean(selectedWork)} onOpenChange={() => setSelectedWork(null)}>
+        <SheetContent className="w-[calc(100%-16px)] overflow-y-auto border-0 bg-[#f7f4ed] p-0 sm:max-w-xl">
           {selectedWork && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="space-y-6 px-4 pb-10"
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="relative w-full h-[300px] rounded-xl overflow-hidden group"
-              >
+            <div>
+              {selectedWork.coverImage ? (
                 <img
                   src={selectedWork.coverImage}
                   alt={selectedWork.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-72 w-full object-cover"
                 />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-              >
-                <h2 className="text-3xl font-bold text-black leading-tight">
-                  {selectedWork.title}
-                </h2>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                className="prose prose-sm dark:prose-invert max-w-none"
-              >
-                <p className="text-black/50 leading-relaxed whitespace-pre-wrap -mt-4">
+              ) : (
+                <div className={`relative h-72 overflow-hidden bg-gradient-to-br ${selectedWork.accent}`}>
+                  <div className="absolute -right-12 -top-12 size-52 rounded-full border-[36px] border-white/20" />
+                  <div className="absolute bottom-8 left-8 font-mono text-xs font-bold uppercase tracking-[0.18em] text-white/75">
+                    {selectedWork.tag}
+                  </div>
+                </div>
+              )}
+              <div className="p-7 sm:p-10">
+                <SheetHeader className="text-left">
+                  <SheetDescription className="font-bold uppercase tracking-[0.14em] text-primary">
+                    {selectedWork.tag}
+                  </SheetDescription>
+                  <SheetTitle className="pt-2 text-4xl font-black tracking-[-0.04em] text-[#101522]">
+                    {selectedWork.title}
+                  </SheetTitle>
+                </SheetHeader>
+                <p className="mt-7 text-base leading-8 text-[#101522]/60">
                   {selectedWork.content}
                 </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 }}
-                className="flex flex-wrap gap-4 pt-4 border-t border-gray-200 dark:border-gray-700"
-              >
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <Calendar size={14} />
-                  <span>
-                    Oluşturulma:{" "}
-                    {format(new Date(selectedWork.createdAt), "d MMMM yyyy", {
-                      locale: tr,
-                    })}
-                  </span>
+                <div className="mt-9 flex items-center gap-2 border-t border-black/10 pt-6 text-sm text-[#101522]/50">
+                  <CalendarDays className="size-4" />
+                  {format(new Date(selectedWork.createdAt), "d MMMM yyyy", {
+                    locale: enUS,
+                  })}
                 </div>
-                {selectedWork.updatedAt &&
-                  selectedWork.createdAt !== selectedWork.updatedAt && (
-                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <RefreshCcw size={14} />
-                      <span>
-                        Güncelleme:{" "}
-                        {format(
-                          new Date(selectedWork.updatedAt),
-                          "d MMMM yyyy",
-                          { locale: tr }
-                        )}
-                      </span>
-                    </div>
-                  )}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.6 }}
-                className="pt-4"
-              >
-                <Button
-                  onClick={handleCloseAlert}
-                  className="w-full bg-primary hover:bg-red-400 text-white font-semibold py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                <button
+                  onClick={() => setSelectedWork(null)}
+                  className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#101522] px-5 py-3 font-bold text-white"
                 >
-                  Kapat
-                </Button>
-              </motion.div>
-            </motion.div>
+                  <X className="size-4" /> Close
+                </button>
+              </div>
+            </div>
           )}
         </SheetContent>
       </Sheet>
-      <div className="max-w-default w-full m-auto flex flex-col gap-16">
-        <motion.h1
-          variants={headingVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.5 }}
-          className="text-4xl text-center leading-[50px] font-bold"
-        >
-          Projeler ve Etkinlikler
-        </motion.h1>
+
+      <div className="mx-auto max-w-[1320px]">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="section-kicker text-primary">Selected work</p>
+            <h2 className="mt-5 text-4xl font-black tracking-[-0.04em] text-[#101522] sm:text-6xl">
+              From curiosity to product.
+            </h2>
+          </div>
+          <p className="max-w-md text-sm leading-7 text-[#101522]/50 sm:text-base">
+            Every project starts with a real question and moves forward through
+            an open process and something concrete enough to test.
+          </p>
+        </div>
+
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+          className="mt-14 grid gap-6 lg:grid-cols-3"
         >
-          {works.data.map((item, index) => (
-            <motion.div
-              key={`our_works_${index}`}
-              onClick={() => handleShowAlert(item)}
-              variants={cardVariants}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3, ease: "easeOut" as const }}
-              className="w-full h-[290px] rounded-2xl overflow-hidden relative group shadow cursor-pointer"
+          {displayWorks.map((item, index) => (
+            <motion.button
+              key={item.id}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                show: { opacity: 1, y: 0 },
+              }}
+              onClick={() => setSelectedWork(item)}
+              className="group overflow-hidden rounded-[28px] border border-black/10 bg-[#f7f4ed] text-left transition-transform hover:-translate-y-2"
             >
-              <motion.img
-                src={item.coverImage}
-                alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <motion.div
-                className="absolute bottom-4 left-0 right-0 w-auto bg-[#ffffffcb] backdrop-blur-sm mx-4 rounded-xl p-5 text-center space-y-2"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, ease: "easeOut" as const }}
-              >
-                <h1 className="text-black text-lg font-bold">{item.title}</h1>
-                <p className="text-sm line-clamp-2">{item.content}</p>
-              </motion.div>
-            </motion.div>
+              <div className="relative h-72 overflow-hidden">
+                {item.coverImage ? (
+                  <img
+                    src={item.coverImage}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.accent}`}>
+                    <div className="absolute -right-10 -top-12 size-52 rounded-full border-[34px] border-white/20 transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute bottom-4 right-6 text-[92px] font-black leading-none text-white/20">
+                      0{index + 1}
+                    </div>
+                    <div className="absolute left-7 top-7 rounded-full border border-white/30 bg-white/15 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-sm">
+                      {item.tag}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="p-7">
+                <div className="flex items-start justify-between gap-5">
+                  <h3 className="text-2xl font-black tracking-[-0.03em] text-[#101522]">
+                    {item.title}
+                  </h3>
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full border border-black/10 transition-colors group-hover:bg-[#101522] group-hover:text-white">
+                    <ArrowUpRight className="size-4" />
+                  </span>
+                </div>
+                <p className="mt-4 line-clamp-3 text-sm leading-7 text-[#101522]/50">
+                  {item.content}
+                </p>
+              </div>
+            </motion.button>
           ))}
         </motion.div>
+
+        {!works.data.length && (
+          <p className="mt-6 text-center text-xs text-[#101522]/35">
+            Showing sample projects · Publish live work from the studio dashboard.
+          </p>
+        )}
       </div>
     </section>
   );
-};
-
-export default OurWorks;
+}

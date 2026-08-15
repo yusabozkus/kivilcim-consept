@@ -58,11 +58,11 @@ const getRoleBadgeVariant = (role: string) => {
 const getRoleLabel = (role: string) => {
   switch (role.toLowerCase()) {
     case "admin":
-      return "Yönetici";
+      return "Admin";
     case "editor":
-      return "Editör";
+      return "Editor";
     case "user":
-      return "Kullanıcı";
+      return "Applicant";
     default:
       return role;
   }
@@ -74,7 +74,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <User className="h-4 w-4 text-blue-600" />
-        <span>İsim</span>
+        <span>Name</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -106,7 +106,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Phone className="h-4 w-4 text-green-600" />
-        <span>Telefon</span>
+        <span>Phone</span>
       </div>
     ),
     cell: ({ row }) => (
@@ -122,7 +122,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Shield className="h-4 w-4 text-indigo-600" />
-        <span>Rol</span>
+        <span>Role</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -142,7 +142,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Briefcase className="h-4 w-4 text-orange-600" />
-        <span>Meslek</span>
+        <span>Profession</span>
       </div>
     ),
     cell: ({ row }) => (
@@ -158,7 +158,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Building2 className="h-4 w-4 text-cyan-600" />
-        <span>Bölüm</span>
+        <span>Field of study</span>
       </div>
     ),
     cell: ({ row }) => (
@@ -174,7 +174,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <MapPin className="h-4 w-4 text-red-600" />
-        <span>Şehir</span>
+        <span>City</span>
       </div>
     ),
     cell: ({ row }) => (
@@ -191,7 +191,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Lightbulb className="h-4 w-4 text-yellow-600" />
-        <span>Yetenekler</span>
+        <span>Skills</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -221,7 +221,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <FileText className="h-4 w-4 text-slate-600" />
-        <span>Sebep</span>
+        <span>Motivation</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -240,7 +240,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Calendar className="h-4 w-4 text-pink-600" />
-        <span>Doğum Tarihi</span>
+        <span>Birth year</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -248,7 +248,7 @@ export const columns: ColumnDef<User>[] = [
       return (
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-700">
-            {date.toLocaleDateString("tr-TR", {
+            {date.toLocaleDateString("en-US", {
               day: "2-digit",
               month: "long",
               year: "numeric",
@@ -263,7 +263,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Clock className="h-4 w-4 text-blue-500" />
-        <span>Oluşturulma</span>
+        <span>Created</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -271,10 +271,10 @@ export const columns: ColumnDef<User>[] = [
       return (
         <div className="flex flex-col gap-0.5">
           <span className="text-sm text-gray-700 font-medium">
-            {date.toLocaleDateString("tr-TR")}
+            {date.toLocaleDateString("en-US")}
           </span>
           <span className="text-xs text-gray-500">
-            {date.toLocaleTimeString("tr-TR", {
+            {date.toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
             })}
@@ -288,7 +288,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <div className="flex items-center gap-2 font-semibold">
         <Clock className="h-4 w-4 text-emerald-500" />
-        <span>Güncellenme</span>
+        <span>Updated</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -301,19 +301,19 @@ export const columns: ColumnDef<User>[] = [
 
       let timeAgo = "";
       if (diffMins < 60) {
-        timeAgo = `${diffMins} dakika önce`;
+        timeAgo = `${diffMins} min ago`;
       } else if (diffHours < 24) {
-        timeAgo = `${diffHours} saat önce`;
+        timeAgo = `${diffHours} hr ago`;
       } else if (diffDays < 7) {
-        timeAgo = `${diffDays} gün önce`;
+        timeAgo = `${diffDays} days ago`;
       } else {
-        timeAgo = date.toLocaleDateString("tr-TR");
+        timeAgo = date.toLocaleDateString("en-US");
       }
 
       return (
         <div className="flex flex-col gap-0.5">
           <span className="text-sm text-gray-700 font-medium">
-            {date.toLocaleDateString("tr-TR")}
+            {date.toLocaleDateString("en-US")}
           </span>
           <span className="text-xs text-emerald-600">{timeAgo}</span>
         </div>
@@ -322,7 +322,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    header: () => <div className="text-right font-semibold">İşlemler</div>,
+    header: () => <div className="text-right font-semibold">Actions</div>,
     cell: ({ row }) => {
       const user = row.original;
       return (
@@ -333,13 +333,13 @@ export const columns: ColumnDef<User>[] = [
                 variant="ghost" 
                 className="h-8 w-8 p-0 hover:bg-gray-100"
               >
-                <span className="sr-only">Menüyü aç</span>
+                <span className="sr-only">Open menu</span>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px]">
               <DropdownMenuLabel className="font-semibold">
-                İşlemler
+                Actions
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -347,15 +347,15 @@ export const columns: ColumnDef<User>[] = [
                 className="cursor-pointer"
               >
                 <FileText className="mr-2 h-4 w-4" />
-                ID'yi kopyala
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <User className="mr-2 h-4 w-4" />
-                Kullanıcıyı görüntüle
+                View applicant
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <FileText className="mr-2 h-4 w-4" />
-                Detayları görüntüle
+                View details
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

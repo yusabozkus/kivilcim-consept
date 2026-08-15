@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey = "name",
-  searchPlaceholder = "Ara...",
+  searchPlaceholder = "Search...",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -181,7 +181,6 @@ export function DataTable<TData, TValue>({
           ${isFullscreen ? "h-full flex flex-col p-6" : ""}
         `}
         >
-          {/* Arama ve Sütun Görünürlüğü */}
           <div className="flex items-center justify-between gap-4 flex-shrink-0">
             <Input
               placeholder={searchPlaceholder}
@@ -191,7 +190,7 @@ export function DataTable<TData, TValue>({
               onChange={(event) =>
                 table.getColumn(searchKey)?.setFilterValue(event.target.value)
               }
-              className="max-w-sm"
+              className="max-w-sm bg-white"
             />
 
             <div className="flex flex-row gap-2">
@@ -199,11 +198,11 @@ export function DataTable<TData, TValue>({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="ml-auto">
                     <Settings2 className="mr-2 h-4 w-4" />
-                    Sütunlar
+                    Columns
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
-                  <DropdownMenuLabel>Görünür Sütunlar</DropdownMenuLabel>
+                  <DropdownMenuLabel>Visible columns</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {table
                     .getAllColumns()
@@ -244,11 +243,10 @@ export function DataTable<TData, TValue>({
             </div>
           </div>
 
-          {/* Filtreler */}
-          <div className="flex flex-wrap items-center gap-3 p-4 bg-muted/50 rounded-lg border flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-3 p-4 bg-white rounded-lg border flex-shrink-0">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Filtreler:</span>
+              <span className="text-sm font-medium">Filters:</span>
             </div>
 
             <Select
@@ -258,11 +256,11 @@ export function DataTable<TData, TValue>({
                 applyFilter("city", value);
               }}
             >
-              <SelectTrigger className="w-[180px] h-9">
-                <SelectValue placeholder="Şehir" />
+              <SelectTrigger className="w-[180px] h-9 bg-white">
+                <SelectValue placeholder="City" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tüm Şehirler</SelectItem>
+                <SelectItem value="all">All cities</SelectItem>
                 {uniqueCities.map((city) => (
                   <SelectItem key={city} value={city}>
                     {city}
@@ -278,11 +276,11 @@ export function DataTable<TData, TValue>({
                 applyFilter("role", value);
               }}
             >
-              <SelectTrigger className="w-[180px] h-9">
-                <SelectValue placeholder="Rol" />
+              <SelectTrigger className="w-[180px] h-9 bg-white">
+                <SelectValue placeholder="Role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tüm Roller</SelectItem>
+                <SelectItem value="all">All roles</SelectItem>
                 {uniqueRoles.map((role) => (
                   <SelectItem key={role} value={role}>
                     {role}
@@ -298,11 +296,11 @@ export function DataTable<TData, TValue>({
                 applyFilter("profession", value);
               }}
             >
-              <SelectTrigger className="w-[180px] h-9">
-                <SelectValue placeholder="Meslek" />
+              <SelectTrigger className="w-[180px] h-9 bg-white">
+                <SelectValue placeholder="Profession" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tüm Meslekler</SelectItem>
+                <SelectItem value="all">All professions</SelectItem>
                 {uniqueProfessions.map((profession) => (
                   <SelectItem key={profession} value={profession}>
                     {profession}
@@ -318,11 +316,11 @@ export function DataTable<TData, TValue>({
                 applyFilter("department", value);
               }}
             >
-              <SelectTrigger className="w-[180px] h-9">
-                <SelectValue placeholder="Bölüm" />
+              <SelectTrigger className="w-[180px] bg-white h-9">
+                <SelectValue placeholder="Field" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tüm Bölümler</SelectItem>
+                <SelectItem value="all">All fields</SelectItem>
                 {uniqueDepartments.map((department) => (
                   <SelectItem key={department} value={department}>
                     {department}
@@ -344,15 +342,14 @@ export function DataTable<TData, TValue>({
             )}
           </div>
 
-          {/* Tablo */}
           <div
             className={`
             overflow-hidden rounded-md border
             ${isFullscreen ? "flex-1 overflow-auto" : ""}
           `}
           >
-            <Table>
-              <TableHeader className="bg-accent sticky top-0 z-10">
+            <Table className="bg-white">
+              <TableHeader className="bg-white sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
@@ -409,7 +406,7 @@ export function DataTable<TData, TValue>({
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
-                      Sonuç bulunamadı.
+                      No results found.
                     </TableCell>
                   </TableRow>
                 )}
@@ -420,7 +417,7 @@ export function DataTable<TData, TValue>({
           {/* Pagination */}
           <div className="flex items-center justify-between px-2 flex-shrink-0">
             <div className="flex-1 text-sm text-muted-foreground">
-              {table.getFilteredRowModel().rows.length} kayıttan{" "}
+              Showing{" "}
               {table.getState().pagination.pageIndex *
                 table.getState().pagination.pageSize +
                 1}
@@ -430,11 +427,11 @@ export function DataTable<TData, TValue>({
                   table.getState().pagination.pageSize,
                 table.getFilteredRowModel().rows.length
               )}{" "}
-              arası gösteriliyor
+              of {table.getFilteredRowModel().rows.length} records
             </div>
             <div className="flex items-center space-x-6 lg:space-x-8">
               <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium">Sayfa başı</p>
+                <p className="text-sm font-medium">Rows per page</p>
                 <select
                   className="h-8 w-[70px] rounded-md border border-input bg-transparent px-2 text-sm"
                   value={table.getState().pagination.pageSize}
@@ -450,7 +447,7 @@ export function DataTable<TData, TValue>({
                 </select>
               </div>
               <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                Sayfa {table.getState().pagination.pageIndex + 1} /{" "}
+                Page {table.getState().pagination.pageIndex + 1} of{" "}
                 {table.getPageCount()}
               </div>
               <div className="flex items-center space-x-2">
@@ -460,7 +457,7 @@ export function DataTable<TData, TValue>({
                   onClick={() => table.previousPage()}
                   disabled={!table.getCanPreviousPage()}
                 >
-                  <span className="sr-only">Önceki sayfa</span>
+                  <span className="sr-only">Previous page</span>
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
                 <Button
@@ -469,7 +466,7 @@ export function DataTable<TData, TValue>({
                   onClick={() => table.nextPage()}
                   disabled={!table.getCanNextPage()}
                 >
-                  <span className="sr-only">Sonraki sayfa</span>
+                  <span className="sr-only">Next page</span>
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>

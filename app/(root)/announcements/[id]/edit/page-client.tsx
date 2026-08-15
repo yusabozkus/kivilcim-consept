@@ -61,13 +61,13 @@ export default function EditClient({ data }: EditClientProps) {
 
   const handleUpdate = async () => {
     if (!title.trim()) {
-      toast.warning("Lütfen bir başlık girin");
+      toast.warning("Please enter a title");
       return;
     }
 
     const blocks = editor.document;
     if (blocks.length === 0) {
-      toast.warning("Lütfen içerik ekleyin");
+      toast.warning("Please add some content");
       return;
     }
 
@@ -85,10 +85,10 @@ export default function EditClient({ data }: EditClientProps) {
         content: blocks,
       });
 
-      toast.success("Duyuru başarıyla güncellendi!");
+      toast.success("Story updated successfully!");
       router.push("/announcements");
     } catch (error: any) {
-      toast.error(error.message || "Bir hata oluştu");
+      toast.error(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -101,12 +101,12 @@ export default function EditClient({ data }: EditClientProps) {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        alert("Lütfen bir resim dosyası seçin");
+        alert("Please select an image file");
         return;
       }
 
       if (file.size > 5 * 1024 * 1024) {
-        alert("Resim boyutu çok büyük. Maksimum 5MB olmalı.");
+        alert("Image is too large. Maximum size is 5MB.");
         return;
       }
 
@@ -120,9 +120,9 @@ export default function EditClient({ data }: EditClientProps) {
 
   return (
     <div className="relative">
-      <header className="w-full py-3 flex flex-row items-center justify-between border-b border-black/30 mb-10 sticky top-0 backdrop-blur-2xl z-50 bg-[#ffffff75]">
+      <header className="w-full py-3 flex flex-row items-center justify-between border-b border-black/30 mb-10 sticky px-5 rounded-b-2xl left-0 top-0 backdrop-blur-2xl z-50 bg-[#ffffff75]">
         <div className="flex flex-row items-center">
-          <SidebarTrigger className="p-5 bg-accent mr-3" />
+          <SidebarTrigger className="p-5 bg-white mr-3" />
           <button
             onClick={() => router.back()}
             className="bg-secondary p-2 rounded-xl"
@@ -145,9 +145,9 @@ export default function EditClient({ data }: EditClientProps) {
             <Redo2 size={20} />
           </button>
         </div>
-        <h1 className="text-lg font-bold">{title || "Yeni Duyuru"}</h1>
+        <h1 className="text-lg font-bold">{title || "Edit story"}</h1>
         <Button onClick={handleUpdate} disabled={isLoading}>
-          {isLoading ? "Güncelleniyor..." : "Güncelle"}
+          {isLoading ? "Updating..." : "Update"}
         </Button>
       </header>
       <div className="max-w-[1000px] m-auto">
@@ -172,7 +172,7 @@ export default function EditClient({ data }: EditClientProps) {
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center">
                 <p className="text-white font-medium opacity-0 group-hover:opacity-100 transition-all bg-black/50 px-4 py-2 rounded-lg">
-                  Resmi değiştirmek için tıklayın
+                  Click to change the image
                 </p>
               </div>
             </>
@@ -180,7 +180,7 @@ export default function EditClient({ data }: EditClientProps) {
             <>
               <Image size={60} className="text-black/20" />
               <p className="text-black/40 font-medium mt-4">
-                Resim seçmek ve ya yüklemek için tıklayınız.
+                Click to select or upload an image.
               </p>
             </>
           )}
@@ -190,12 +190,12 @@ export default function EditClient({ data }: EditClientProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="p-0 !border-0 !ring-0 !outline-0 !shadow-none rounded-none font-bold !text-4xl placeholder:text-black/30 resize-none mt-10"
-          placeholder="Başlık Ekleyin..."
+          placeholder="Add a title..."
           disabled={isLoading}
         />
         <BlockNoteView
           editor={editor}
-          className="p-0 -mx-13 min-h-[500px]"
+          className="p-0 -mx-13 mt-5 min-h-[500px]"
           theme="light"
           editable={!isLoading}
           shadCNComponents={{

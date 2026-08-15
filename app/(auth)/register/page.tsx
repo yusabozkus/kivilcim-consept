@@ -7,11 +7,11 @@ import { Metadata } from "next";
 import { site_config } from "@/app/layout";
 
 export const metadata: Metadata = {
-  title: `Kayıt Ol - ${site_config.title}`,
-  description: `${site_config.title} topluluğuna katılın ve Türkiye'nin geleceği için bizimle birlikte çalışın. Atatürk'ün idealleri doğrultusunda hareket eden topluluğumuzun bir parçası olun.`,
+  title: `Join the Collective - ${site_config.title}`,
+  description: `Share your skills, curiosity, and the kind of work you want to build with ${site_config.title}.`,
   openGraph: {
-    title: `Kayıt Ol - ${site_config.title}`,
-    description: `Topluluğumuza üye olun ve projelerimizde aktif rol alın. ${site_config.caption}`,
+    title: `Join the Collective - ${site_config.title}`,
+    description: `Build creative technology and social-impact projects together. ${site_config.caption}`,
     url: `${site_config.url}/register`,
     siteName: site_config.title,
     images: [
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
         alt: site_config.title,
       },
     ],
-    locale: "tr_TR",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Kayıt Ol - ${site_config.title}`,
-    description: `Topluluğumuza katılın ve fark yaratın. ${site_config.caption}`,
+    title: `Join the Collective - ${site_config.title}`,
+    description: `Join a Kıvılcım project team. ${site_config.caption}`,
     images: [site_config.banner],
   },
   robots: {

@@ -1,109 +1,76 @@
 "use client";
-import { what_we_do } from "@/constants";
-import React from "react";
+
 import { motion } from "framer-motion";
+import { focusAreas } from "@/constants/brand";
 
-type Props = {};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2, // kartların sırayla gelmesini sağlar
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
-
-const headingVariants = {
-  hidden: { opacity: 0, y: -40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
-
-const WhatWeDo = (props: Props) => {
+export default function WhatWeDo() {
   return (
-    <section
-      className="w-full lg:h-full flex flex-row items-center justify-center bg-[#F2F4F3] mt-10 px-4 lg:px-0 py-10"
-      id="home"
-    >
-      <div className="max-w-default w-full m-auto flex flex-col gap-16 ">
-        {/* Başlık */}
-        <motion.h1
-          variants={headingVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.6 }}
-          className="text-3xl leading-[50px] lg:text-4xl text-center font-semibold"
-        >
-          Türk Gençliğiyle Geleceğe <br className="hidden lg:block" />
-          Umut ve <span className="text-[#797e80]">Güçle Kanat Açıyoruz</span>
-        </motion.h1>
+    <section id="capabilities" className="bg-[#090d18] px-4 py-24 text-white sm:px-6 lg:py-32">
+      <div className="mx-auto max-w-[1320px]">
+        <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="section-kicker text-primary">What we do</p>
+            <h2 className="mt-5 max-w-xl text-4xl font-black leading-[1.02] tracking-[-0.04em] sm:text-6xl">
+              From a sharp question to a working prototype.
+            </h2>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="max-w-2xl text-base leading-8 text-white/50 lg:ml-auto lg:text-lg"
+          >
+            Kıvılcım is not an agency. It is a shared production space where
+            different disciplines work on the same question. Every project
+            moves through research, design, technology, and open reflection.
+          </motion.p>
+        </div>
 
-        {/* Kartlar */}
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 rounded-2xl overflow-hidden border"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.08 } },
+          }}
+          className="mt-16 grid overflow-hidden rounded-3xl border border-white/10 md:grid-cols-2 lg:grid-cols-3"
         >
-          {what_we_do.map((item, index) => {
-            const Icon = item.icon;
-
-            const borderClasses =
-              index === 0
-                ? "border-r border-b"
-                : index === 1
-                ? "border-b border-r"
-                : index === 2
-                ? "border-b"
-                : index === 3
-                ? "border-r"
-                : index === 4
-                ? "border-r"
-                : "";
-
+          {focusAreas.map((area) => {
+            const Icon = area.icon;
             return (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                className={`flex flex-col gap-6 lg:gap-10 bg-white p-6 lg:p-10 ${borderClasses}`}
+              <motion.article
+                key={area.number}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0 },
+                }}
+                className="group min-h-[330px] border-b border-white/10 bg-white/[0.025] p-7 transition-colors hover:bg-white/[0.06] md:border-r lg:p-9"
               >
-                <div className="p-3 lg:p-4 rounded-lg bg-white w-max shadow">
-                  <div className="p-2 rounded-full bg-primary">
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs text-white/30">{area.number}</span>
+                  <span className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-white/5 text-primary transition-transform group-hover:-rotate-6 group-hover:scale-110">
+                    <Icon className="size-5" />
+                  </span>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl lg:text-2xl font-normal">
-                    {item.title}
+                <div className="mt-20">
+                  <h3 className="text-2xl font-bold tracking-[-0.025em]">
+                    {area.title}
                   </h3>
-                  <p className="text-sm lg:text-base text-[#797e80]">
-                    {item.description}
+                  <p className="mt-4 text-sm leading-7 text-white/45">
+                    {area.description}
                   </p>
                 </div>
-              </motion.div>
+              </motion.article>
             );
           })}
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default WhatWeDo;
+}

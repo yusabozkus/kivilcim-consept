@@ -44,14 +44,14 @@ export function AppSidebar() {
               state === "collapsed" ? "hidden" : "block"
             }`}
           >
-            Türk'ün Kanadı
+            KIVILCIM
           </h1>
         </div>
       </SidebarHeader>
       <SidebarContent className="">
         <SidebarGroup className={`${state === "collapsed" ? "" : "px-2"}`}>
           <SidebarGroupLabel className="text-sm font-bold text-zinc-500">
-            Yönetim
+            Workspace
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-3">
             <SidebarMenu className="flex flex-col items-center justify-center">
@@ -91,7 +91,7 @@ export function AppSidebar() {
               })}
               <SidebarMenuItem className="w-full">
                 <SidebarMenuButton
-                  tooltip={"Profil Bilgilerini Görüntüle"}
+                  tooltip={"View profile"}
                   asChild
                   onClick={() => open("profile")}
                   isActive={isOpen}
@@ -110,7 +110,7 @@ export function AppSidebar() {
                         state === "collapsed" ? "hidden" : "block"
                       } ml-1 font-semibold`}
                     >
-                      Profil
+                      Profile
                     </span>
                   </div>
                 </SidebarMenuButton>

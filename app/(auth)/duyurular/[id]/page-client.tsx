@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Announcement } from "@/lib/actions/announcements.actions";
 import { formatDistanceToNowStrict } from "date-fns";
-import { tr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { ArrowLeft, Calendar, ArrowUp } from "lucide-react";
 import dynamic from "next/dynamic";
 import ShareAnnouncement from "@/components/ShareAnnouncement";
@@ -16,7 +16,7 @@ const BlockNoteEditor = dynamic(() => import("./BlockNoteEditor"), {
   ssr: false,
   loading: () => (
     <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200 min-h-[200px] flex items-center justify-center">
-      <p className="text-neutral-500">İçerik yükleniyor...</p>
+      <p className="text-neutral-500">Loading story...</p>
     </div>
   ),
 });
@@ -68,7 +68,7 @@ export default function PageClient({ announcement }: PageClientProps) {
             >
               <Logo />
               <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
-                Türk'ün Kanadı
+                KIVILCIM
               </h1>
             </motion.div>
           </Link>
@@ -86,9 +86,9 @@ export default function PageClient({ announcement }: PageClientProps) {
               variant="outline"
               className="rounded-full px-6 py-5 border-2 border-primary hover:bg-primary text-primary hover:text-white transition-all duration-300"
             >
-              <Link href="/duyurular">
+              <Link href="/journal">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Geri Dön
+                Go back
               </Link>
             </Button>
           </motion.div>
@@ -135,7 +135,7 @@ export default function PageClient({ announcement }: PageClientProps) {
               <p className="text-sm font-semibold text-neutral-900">
                 {announcement.user.name}
               </p>
-              <p className="text-xs text-neutral-500">Yazar</p>
+              <p className="text-xs text-neutral-500">Author</p>
             </div>
           </div>
 
@@ -144,7 +144,7 @@ export default function PageClient({ announcement }: PageClientProps) {
             <span className="text-sm text-neutral-700">
               {formatDistanceToNowStrict(new Date(announcement.createdAt), {
                 addSuffix: true,
-                locale: tr,
+                locale: enUS,
               })}
             </span>
           </div>
@@ -182,7 +182,7 @@ export default function PageClient({ announcement }: PageClientProps) {
               stiffness: 260,
               damping: 20,
             }}
-            aria-label="Yukarı çık"
+            aria-label="Back to top"
           >
             <ArrowUp className="w-6 h-6" />
           </motion.button>

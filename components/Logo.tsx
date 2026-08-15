@@ -7,15 +7,18 @@ type Props = {
 const Logo = ({ className }: Props) => {
   return (
     <svg
-      className={`w-6 h-6 sm:w-8 sm:h-8 ${className}`}
-      viewBox="0 0 40 40"
+      className={`w-8 h-8 sm:w-9 sm:h-9 text-primary ${className || ""}`}
+      viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Kıvılcım"
     >
+      <rect x="2" y="2" width="44" height="44" rx="14" fill="currentColor" />
       <path
-        d="M30 28V12C30 10.8954 29.1046 10 28 10H27.8994C27.369 10 26.8604 10.2109 26.4854 10.5859L10.5859 26.4854C10.2109 26.8604 10 27.369 10 27.8994V40H0V27.8994C2.15312e-05 24.7168 1.26423 21.6645 3.51465 19.4141L19.4141 3.51465C21.6645 1.26423 24.7168 2.1373e-05 27.8994 0H28C34.6274 0 40 5.37258 40 12V28C40 34.6274 34.6274 40 28 40H14V30H28C29.1046 30 30 29.1046 30 28Z M0 0H17L7 10H0V0Z"
-        fill="#FF4D00"
+        d="M27.2 8.5 12.8 27.1h10.1L20.8 40l14.4-19.1H25.1l2.1-12.4Z"
+        fill="white"
       />
+      <circle cx="36.5" cy="10.5" r="3.5" fill="#B8A9FF" />
     </svg>
   );
 };

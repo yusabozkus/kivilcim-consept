@@ -7,7 +7,7 @@ import {
 } from "@/lib/actions/announcements.actions";
 import { auth } from "@/lib/auth";
 import { formatDistanceToNowStrict } from "date-fns";
-import { tr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Edit3, Trash2, Calendar, Image } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -42,7 +42,7 @@ type ClientProps = {
 export default function AnnouncementsClient({ session, announcements }: ClientProps) {
   const handleDelete = async (id: string) => {
     if (!id) {
-      toast.error("Duyuru silinemedi!");
+      toast.error("Unable to delete story!");
       return;
     }
 
@@ -55,14 +55,14 @@ export default function AnnouncementsClient({ session, announcements }: ClientPr
       <div className="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Duyurular
+            Studio Journal
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             {announcements.pagination.total} duyuru bulundu
           </p>
         </div>
         <Button asChild>
-          <Link href={"/announcements/add"}>Yeni Duyuru</Link>
+          <Link href={"/announcements/add"}>New story</Link>
         </Button>
       </div>
 
@@ -73,10 +73,10 @@ export default function AnnouncementsClient({ session, announcements }: ClientPr
               <Image size={36} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              Henüz duyuru yok
+              No stories yet
             </h3>
             <p className="text-sm text-gray-500">
-              İlk duyurunuzu ekleyerek başlayın
+              Start by publishing your first story
             </p>
           </div>
         ) : (
@@ -134,7 +134,7 @@ export default function AnnouncementsClient({ session, announcements }: ClientPr
                         <span>
                           {formatDistanceToNowStrict(new Date(item.createdAt), {
                             addSuffix: true,
-                            locale: tr,
+                            locale: enUS,
                           })}
                         </span>
                       </div>
@@ -150,7 +150,7 @@ export default function AnnouncementsClient({ session, announcements }: ClientPr
                     >
                       <Link href={`/announcements/${item.id}/edit`}>
                         <Edit3 size={16} />
-                        <span className="hidden sm:inline">Düzenle</span>
+                        <span className="hidden sm:inline">Edit</span>
                       </Link>
                     </Button>
 
@@ -162,31 +162,30 @@ export default function AnnouncementsClient({ session, announcements }: ClientPr
                           className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 flex-1 sm:flex-none"
                         >
                           <Trash2 size={16} />
-                          <span className="hidden sm:inline">Sil</span>
+                          <span className="hidden sm:inline">Delete</span>
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent className="w-[90vw] max-w-md">
                         <AlertDialogHeader>
                           <AlertDialogTitle className="text-base sm:text-lg">
-                            Duyuruyu silmek istediğinizden emin misiniz?
+                            Delete this story?
                           </AlertDialogTitle>
                           <AlertDialogDescription className="text-sm">
                             <strong className="text-gray-900">
                               {item.title}
                             </strong>{" "}
-                            başlıklı duyuru kalıcı olarak silinecektir. Bu işlem
-                            geri alınamaz.
+                            will be permanently deleted. This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex-col sm:flex-row gap-2">
                           <AlertDialogCancel className="w-full sm:w-auto">
-                            Vazgeç
+                            Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDelete(item.id)}
                             className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                           >
-                            Sil
+                            Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

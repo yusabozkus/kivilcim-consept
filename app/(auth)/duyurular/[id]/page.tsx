@@ -6,7 +6,7 @@ import { site_config } from "@/app/layout";
 
 export const dynamic = "force-dynamic";
 
-const baseUrl = "https://turkunkanadi.vercel.app";
+const baseUrl = "https://kivilcim-community.vercel.app";
 
 export async function generateMetadata({
   params,
@@ -18,19 +18,19 @@ export async function generateMetadata({
 
   if (!announcement) {
     return {
-      title: `Duyuru Bulunamadı - ${site_config.title}`,
-      description: "Aradığınız duyuru bulunamadı.",
+      title: `Story Not Found - ${site_config.title}`,
+      description: "The story you are looking for could not be found.",
       openGraph: {
-        title: `Duyuru Bulunamadı - ${site_config.title}`,
-        description: "Aradığınız duyuru bulunamadı.",
-        url: `${baseUrl}/duyurular/${id}`,
+        title: `Story Not Found - ${site_config.title}`,
+        description: "The story you are looking for could not be found.",
+        url: `${baseUrl}/journal/${id}`,
         siteName: site_config.title,
         images: [
           {
             url: `${baseUrl}/default-og-image.jpg`,
             width: 1200,
             height: 630,
-            alt: "Duyuru Bulunamadı",
+            alt: "Story not found",
           },
         ],
         type: "article",
@@ -70,7 +70,7 @@ export async function generateMetadata({
     description: textPreview,
     openGraph: {
       siteName: site_config.title,
-      url: `${baseUrl}/duyurular/${id}`,
+      url: `${baseUrl}/journal/${id}`,
       title: `${announcement.title} - ${site_config.title}`,
       description: textPreview,
       images: [

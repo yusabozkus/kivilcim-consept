@@ -15,7 +15,7 @@ export default function BlockNoteEditor({ content }: BlockNoteEditorProps) {
   });
 
   return (
-    <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200">
+    <div className="rounded-3xl p-8 md:p-12 shadow-sm border border-neutral-200">
       <BlockNoteView editor={editor} editable={false} theme="light" />
     </div>
   );

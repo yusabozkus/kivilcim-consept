@@ -31,31 +31,31 @@ const capitalizeFirstLetter = (str: string) =>
 export const RegisterValidation = z.object({
   name: z
     .string()
-    .min(1, { message: "Ad ve soyad zorunludur." })
-    .min(3, { message: "Ad ve soyad en az 3 karakter olmalıdır." })
-    .max(100, { message: "Ad ve soyad en fazla 100 karakter olabilir." })
+    .min(1, { message: "Full name is required." })
+    .min(3, { message: "Full name must be at least 3 characters." })
+    .max(100, { message: "Full name cannot exceed 100 characters." })
     .regex(/^[a-zA-ZçğıöşüÇĞIİÖŞÜ\s]+$/, {
-      message: "Ad ve soyad sadece harflerden oluşmalıdır.",
+      message: "Full name may contain letters and spaces only.",
     })
     .transform(capitalizeFirstLetter),
 
   birthDate: z
     .string()
-    .min(1, { message: "Doğum yılı zorunludur." })
+    .min(1, { message: "Birth year is required." })
     .refine(
       (year) => {
         const currentYear = new Date().getFullYear();
         const birthDate = parseInt(year);
         return birthDate >= 1946 && birthDate <= 2013;
       },
-      { message: "Doğum yılı 1946-2006 arasında olmalıdır." }
+      { message: "Birth year must be between 1946 and 2013." }
     ),
 
   phoneNumber: z
     .string()
-    .min(1, { message: "Telefon numarası zorunludur." })
+    .min(1, { message: "Phone number is required." })
     .regex(/^5\d{2} \d{3} \d{2} \d{2}$/, {
-      message: "Geçerli bir telefon numarası giriniz. (5XX XXX XX XX)",
+      message: "Enter a valid phone number. (5XX XXX XX XX)",
     })
     .transform((val: string) => {
       const digits = val.replace(/\s/g, "");
@@ -64,39 +64,50 @@ export const RegisterValidation = z.object({
 
   profession: z
     .string()
-    .min(1, { message: "Meslek bilgisi zorunludur." })
-    .min(2, { message: "Meslek en az 2 karakter olmalıdır." })
-    .max(100, { message: "Meslek en fazla 100 karakter olabilir." })
+    .min(1, { message: "Profession is required." })
+    .min(2, { message: "Profession must be at least 2 characters." })
+    .max(100, { message: "Profession cannot exceed 100 characters." })
     .transform(capitalizeFirstLetter),
 
   department: z
     .string()
-    .max(150, { message: "Bölüm adı en fazla 150 karakter olabilir." })
+    .max(150, { message: "Field of study cannot exceed 150 characters." })
     .transform((val) => (val.trim() === "" ? "" : capitalizeFirstLetter(val)))
     .or(z.literal("")),
 
   email: z
     .string()
-    .min(1, { message: "E-posta adresi zorunludur." })
-    .email({ message: "Geçerli bir e-posta adresi giriniz." })
+    .min(1, { message: "Email address is required." })
+    .email({ message: "Enter a valid email address." })
     .transform((val) => val.trim())
     .transform(turkishLowerCase),
 
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .regex(/[A-Za-z]/, { message: "Password must contain at least one letter." })
+    .regex(/[0-9]/, { message: "Password must contain at least one number." }),
+
+  confirmPassword: z.string().min(1, { message: "Please confirm your password." }),
+
   skills: z
     .string()
-    .min(1, { message: "Yetenek ve hobi bilgisi zorunludur." })
-    .min(10, { message: "Yetenek ve hobiler en az 10 karakter olmalıdır." })
+    .min(1, { message: "Skills and interests are required." })
+    .min(10, { message: "Please write at least 10 characters." })
     .max(1000, {
-      message: "Yetenek ve hobiler en fazla 1000 karakter olabilir.",
+      message: "Skills and interests cannot exceed 1000 characters.",
     }),
 
   reason: z
     .string()
-    .min(1, { message: "Katılma nedeni zorunludur." })
-    .min(20, { message: "Katılma nedeni en az 20 karakter olmalıdır." })
-    .max(1000, { message: "Katılma nedeni en fazla 1000 karakter olabilir." }),
+    .min(1, { message: "Please tell us why you want to join." })
+    .min(20, { message: "Please write at least 20 characters." })
+    .max(1000, { message: "Your answer cannot exceed 1000 characters." }),
 
-  city: z.string().min(1, { message: "Şehir seçimi zorunludur." }),
+  city: z.string().min(1, { message: "Please select a city." }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
 });
 
 export const formatPhoneNumber = (value: string) => {
@@ -125,6 +136,6 @@ export const formatPhoneNumber = (value: string) => {
 };
 
 export const SigninValidation = z.object({
-  email: z.string().email({ message: "Geçersiz e-posta adresi." }),
-  password: z.string().min(8, { message: "Şifre en az 8 karakter olmalıdır." }),
+  email: z.string().email({ message: "Enter a valid email address." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
 });

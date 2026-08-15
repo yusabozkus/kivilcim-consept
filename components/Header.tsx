@@ -68,7 +68,7 @@ export default function Header({ session }: { session: Session | null }) {
     return (
       <header className="w-full flex flex-row items-center justify-between py-3 sm:py-5 px-4 sm:px-0">
         <div className="flex flex-row items-center gap-4 md:gap-10 flex-1 min-w-0">
-          <SidebarTrigger className="p-4 sm:p-5 bg-accent flex-shrink-0" />
+          <SidebarTrigger className="p-4 sm:p-5 bg-white! flex-shrink-0" />
           <Breadcrumb className="min-w-0 flex-1">
             <BreadcrumbList className="flex-wrap">
               <BreadcrumbItem>
@@ -79,7 +79,7 @@ export default function Header({ session }: { session: Session | null }) {
                   >
                     <Home className="size-4 sm:size-5 text-zinc-400 flex-shrink-0" />
                     <span className="hidden md:inline text-sm sm:text-base text-zinc-400 font-semibold">
-                      Ana Sayfa
+                      Overview
                     </span>
                   </Link>
                 </BreadcrumbLink>
@@ -152,7 +152,7 @@ export default function Header({ session }: { session: Session | null }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel className="flex flex-row items-center justify-between">
-                Hesabım
+                My account
                 <p className="text-xs font-light bg-primary/10 text-primary rounded-lg w-max capitalize px-2 py-0.5">
                   {session?.user.role}
                 </p>
@@ -188,14 +188,14 @@ export default function Header({ session }: { session: Session | null }) {
                   className="flex flex-row items-center gap-3 cursor-pointer"
                 >
                   <User className="size-4 flex-shrink-0" />
-                  Profil
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => open("general")}
                   className="flex flex-row items-center gap-3 cursor-pointer"
                 >
                   <Settings className="size-4 flex-shrink-0" />
-                  Ayarlar
+                  Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
@@ -204,7 +204,7 @@ export default function Header({ session }: { session: Session | null }) {
                 className="cursor-pointer"
               >
                 <LogOut className="flex-shrink-0" />
-                Çıkış Yap
+                Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

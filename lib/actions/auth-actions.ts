@@ -2,9 +2,7 @@
 
 import { headers } from "next/headers";
 import { auth } from "../auth";
-import { PrismaClient } from "../generated/prisma";
-
-const prisma = new PrismaClient();
+import { prisma } from "../prisma";
 
 interface SignUpExtra {
   birthDate: string;
@@ -14,7 +12,6 @@ interface SignUpExtra {
   skills: string;
   reason: string;
   city: string;
-  role: string;
   image?: string;
 }
 
@@ -41,7 +38,6 @@ export const signUp = async (
       password,
       name,
       image: image,
-      callbackURL: "/dashboard",
       ...extra,
     },
   });
@@ -65,14 +61,14 @@ export const signIn = async (email: string, password: string) => {
     if (!user) {
       return {
         success: false,
-        error: "Kullanıcı bulunamadı",
+        error: "User not found",
       };
     }
 
-    if (user.role !== "admin" && user.role !== "editor") {
+    if (user.role !== "admin") {
       return {
         success: false,
-        error: "Kullanıcı bulunamadı",
+        error: "User not found",
       };
     }
 
@@ -87,26 +83,26 @@ export const signIn = async (email: string, password: string) => {
     if (!result || !result.user) {
       return {
         success: false,
-        error: "Geçersiz email veya parola",
+        error: "Invalid email or password",
       };
     }
 
     return { success: true, data: result };
   } catch (error: any) {
-    let errorMessage = "Giriş işlemi başarısız oldu";
+    let errorMessage = "Unable to sign in";
 
     if (error.message) {
       const msg = error.message.toLowerCase();
 
       if (msg.includes("invalid") || msg.includes("credentials")) {
-        errorMessage = "Geçersiz email veya parola";
+        errorMessage = "Invalid email or password";
       } else if (msg.includes("password")) {
-        errorMessage = "Parola yanlış";
+        errorMessage = "Incorrect password";
       } else if (msg.includes("account") && msg.includes("locked")) {
         errorMessage =
-          "Hesabınız kilitlenmiş. Lütfen destek ile iletişime geçin";
+          "Your account is locked. Please contact support.";
       } else if (msg.includes("verified") || msg.includes("verification")) {
-        errorMessage = "Email adresinizi doğrulamanız gerekiyor";
+        errorMessage = "Please verify your email address";
       } else {
         errorMessage = error.message;
       }
@@ -138,13 +134,13 @@ export const updateProfileImage = async (userId: string, image: string) => {
 
     return {
       success: true,
-      message: "Profil resmi başarıyla güncellendi",
+      message: "Profile image updated successfully",
       data: updatedUser,
     };
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || "Profil resmi güncellenirken bir hata oluştu",
+      error: error.message || "Unable to update profile image",
     };
   }
 };
@@ -170,14 +166,14 @@ export const updateProfile = async (
 
     return {
       success: true,
-      message: "Profil bilgileri başarıyla güncellendi",
+      message: "Profile updated successfully",
       data: updatedUser,
     };
   } catch (error: any) {
-    let errorMessage = "Profil güncellenirken bir hata oluştu";
+    let errorMessage = "Unable to update profile";
 
     if (error.code === "P2002") {
-      errorMessage = "Bu email adresi zaten kullanımda";
+      errorMessage = "This email address is already in use";
     } else if (error.message) {
       errorMessage = error.message;
     }
@@ -201,12 +197,12 @@ export const signOutFromAllDevices = async (userId: string) => {
 
     return {
       success: true,
-      message: "Tüm cihazlardan başarıyla çıkış yapıldı",
+      message: "Signed out from all devices",
     };
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || "Çıkış yapılırken bir hata oluştu",
+      error: error.message || "Unable to sign out",
     };
   }
 };

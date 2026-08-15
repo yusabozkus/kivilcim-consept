@@ -52,7 +52,7 @@ export default function ShareAnnouncement({ announcement }: Props) {
     try {
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
-      toast.success("Panoya Kopyalandı!");
+      toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch (error: any) {
       toast.error("Copy failed", {
@@ -142,11 +142,10 @@ export default function ShareAnnouncement({ announcement }: Props) {
         <DialogContent className="rounded-2xl shadow-xl bg-[#ffffffd6] backdrop-blur-lg !border-none max-w-md">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-gray-900">
-              Duyuruyu paylaş
+              Share this story
             </DialogTitle>
             <DialogDescription className="text-gray-600">
-              Bu bağlantıyı kopyalayabilir veya doğrudan sosyal medya üzerinden
-              paylaşabilirsin.
+              Copy the link or share it directly on social media.
             </DialogDescription>
           </DialogHeader>
 
@@ -189,7 +188,7 @@ export default function ShareAnnouncement({ announcement }: Props) {
               className="flex flex-col items-center justify-center flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl py-3 transition"
             >
               <Share className="w-5 h-5" />
-              <span className="text-xs mt-1">Diğer</span>
+              <span className="text-xs mt-1">More</span>
             </motion.button>
           </div>
         </DialogContent>
@@ -220,10 +219,9 @@ export default function ShareAnnouncement({ announcement }: Props) {
 
       <DrawerContent className="bg-[#ffffffd6] backdrop-blur-md border-t border-gray-200">
         <DrawerHeader className="text-left">
-          <DrawerTitle>Duyuruyu paylaş</DrawerTitle>
+          <DrawerTitle>Share this story</DrawerTitle>
           <DrawerDescription>
-            Bu bağlantıyı kopyalayabilir veya doğrudan sosyal medya üzerinden
-            paylaşabilirsin.
+            Copy the link or share it directly on social media.
           </DrawerDescription>
         </DrawerHeader>
 
@@ -269,7 +267,7 @@ export default function ShareAnnouncement({ announcement }: Props) {
           </DrawerClose>
           <Button onClick={handleShare} className="flex-1 gap-2">
             <Share className="w-4 h-4" />
-            Paylaş
+            Share
           </Button>
         </DrawerFooter>
       </DrawerContent>

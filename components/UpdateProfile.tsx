@@ -16,7 +16,7 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { format } from "date-fns";
-import { tr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Button } from "./ui/button";
 import {
   Check,
@@ -99,13 +99,13 @@ export default function UpdateProfile({ session }: Props) {
       });
 
       if (result.success) {
-        toast.success("Profil bilgileri başarıyla güncellendi!");
+        toast.success("Profile updated successfully!");
         router.refresh();
       } else {
-        toast.error(result.error || "Bir hata oluştu");
+        toast.error(result.error || "Something went wrong");
       }
     } catch (error) {
-      toast.error("Profil güncellenirken bir hata oluştu");
+      toast.error("Unable to update profile");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -117,10 +117,10 @@ export default function UpdateProfile({ session }: Props) {
       <div className="p-6 space-y-6">
         <div>
           <h3 className="text-2xl font-semibold text-black mb-2">
-            Profil Bilgileri
+            Profile details
           </h3>
           <p className="text-sm text-black/50">
-            Kişisel bilgilerinizi görüntüleyin ve düzenleyin
+            View and edit your personal information
           </p>
         </div>
 
@@ -168,7 +168,7 @@ export default function UpdateProfile({ session }: Props) {
               className="text-sm text-gray-600 flex items-center gap-2"
             >
               <User size={16} className="text-gray-400" />
-              Ad Soyad
+              Full name
             </Label>
             <Input
               id="name"
@@ -202,7 +202,7 @@ export default function UpdateProfile({ session }: Props) {
               className="text-sm text-gray-600 flex items-center gap-2"
             >
               <Phone size={16} className="text-gray-400" />
-              Telefon Numarası
+              Phone number
             </Label>
             <Input
               id="phoneNumber"
@@ -221,7 +221,7 @@ export default function UpdateProfile({ session }: Props) {
               className="text-sm text-gray-600 flex items-center gap-2"
             >
               <Calendar size={16} className="text-gray-400" />
-              Doğum Tarihi
+              Birth year
             </Label>
             <Input
               id="birthDate"
@@ -230,7 +230,7 @@ export default function UpdateProfile({ session }: Props) {
               value={
                 user.birthDate
                   ? format(new Date(user.birthDate), "d MMMM yyyy", {
-                      locale: tr,
+                      locale: enUS,
                     })
                   : ""
               }
@@ -245,7 +245,7 @@ export default function UpdateProfile({ session }: Props) {
                 className="text-sm text-gray-600 flex items-center gap-2"
               >
                 <Briefcase size={16} className="text-gray-400" />
-                Meslek
+                Profession
               </Label>
               <Input
                 id="profession"
@@ -263,7 +263,7 @@ export default function UpdateProfile({ session }: Props) {
                 className="text-sm text-gray-600 flex items-center gap-2"
               >
                 <GraduationCap size={16} className="text-gray-400" />
-                Okuduğunuz Bölüm
+                Field of study
               </Label>
               <Input
                 id="department"
@@ -283,7 +283,7 @@ export default function UpdateProfile({ session }: Props) {
               className="text-sm text-gray-600 flex items-center gap-2"
             >
               <MapPin size={16} className="text-gray-400" />
-              Yaşadığınız Şehir
+              City
             </Label>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -294,16 +294,16 @@ export default function UpdateProfile({ session }: Props) {
                   className="w-full h-11 text-left flex flex-row items-center justify-between bg-white border-gray-200 hover:bg-gray-50 focus:border-primary focus:ring-primary/20 transition-all"
                 >
                   <span className="text-gray-900">
-                    {form.city || "Şehir seçin"}
+                    {form.city || "Select a city"}
                   </span>
                   <ChevronsUpDown size={16} className="text-gray-400" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[300px] p-0">
                 <Command>
-                  <CommandInput placeholder="Şehir ara..." className="h-9" />
+                  <CommandInput placeholder="Search cities..." className="h-9" />
                   <CommandList>
-                    <CommandEmpty>Şehir bulunamadı.</CommandEmpty>
+                    <CommandEmpty>No city found.</CommandEmpty>
                     <CommandGroup>
                       {Object.entries(provinces).map(([key, name]) => (
                         <CommandItem
@@ -334,10 +334,10 @@ export default function UpdateProfile({ session }: Props) {
         <div className="bg-[#ffffff94] rounded-xl p-4 border border-gray-200">
           <div className="flex items-center gap-2 text-sm">
             <Clock size={16} className="text-gray-400" />
-            <span className="text-gray-600">Kayıt Tarihi:</span>
+            <span className="text-gray-600">Member since:</span>
             <span className="text-gray-900 font-medium">
               {format(new Date(user.createdAt), "d MMMM yyyy, HH:mm", {
-                locale: tr,
+                locale: enUS,
               })}
             </span>
           </div>
@@ -349,7 +349,7 @@ export default function UpdateProfile({ session }: Props) {
           className="w-full h-11 bg-primary/80 hover:bg-primary text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading && <Spinner />}
-          {isLoading ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
+          {isLoading ? "Saving..." : "Save changes"}
         </Button>
       </div>
     </div>
